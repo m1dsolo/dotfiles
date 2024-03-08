@@ -1,0 +1,1391 @@
+priority 2000
+snippet add "add edge with no weight"
+	int h[N], vs[M], ne[M], idx = 1;
+
+	void add(int u, int v) {
+		vs[idx] = v, ne[idx] = h[u], h[u] = idx++;
+	}
+
+		for (int i = 0; i < m; i++) {
+			int u, v;
+			scanf("%d%d", &u, &v);
+			add(u, v), add(v, u);
+		}
+
+priority 2000
+snippet addw "add edge with weight"
+	int h[N], vs[M], ws[M], ne[M], idx = 1;
+
+	void add(int u, int v, int w) {
+		vs[idx] = v, ::ws[idx] = w, ne[idx] = h[u], h[u] = idx++;
+	}
+
+		for (int i = 0; i < m; i++) {
+			int u, v, w;
+			scanf("%d%d%d", &u, &v, &w);
+			add(u, v, w), add(v, u, w);
+		}
+
+# O(mlogn)
+priority 2000
+snippet dijkstra
+	#include <queue>
+	const int INF = 0x3f3f3f3f;
+	int h[N], vs[M], ws[M], ne[M], idx = 1, dis[N];
+	bool vis[N];
+
+	void add(int u, int v, int w) {
+		vs[idx] = v, ::ws[idx] = w, ne[idx] = h[u], h[u] = idx++;
+	}
+
+	void dijkstra(int s) {
+		memset(dis, 0x3f, sizeof dis);
+		memset(vis, false, sizeof vis);
+		dis[s] = 0;
+		priority_queue<PII, vector<PII>, greater<PII>> q;
+		q.push({0, s});
+		while (q.size()) {
+			int u = q.top().second; q.pop();
+			if (vis[u]) continue;
+			vis[u] = true;
+			for (int i = h[u]; i; i = ne[i]) {
+				int v = vs[i], w = ::ws[i];
+				if (dis[v] > dis[u] + w)
+					q.push({dis[v] = dis[u] + w, v});
+			}
+		}
+	}
+
+priority 2000
+snippet spfa
+	#include <queue>
+	int h[N], vs[M], ws[M], ne[M], idx = 1, dis[N];
+	bool vis[N];
+
+	void add(int u, int v, int w) {
+		vs[idx] = v, ::ws[idx] = w, ne[idx] = h[u], h[u] = idx++;
+	}
+
+	void spfa(int s) {
+		memset(dis + 1, 0x3f, sizeof(int) * n);
+		dis[s] = 0;
+		memset(vis + 1, false, n);
+		queue<int> q({s});
+		vis[s] = true;
+		while (q.size()) {
+			int u = q.front(); q.pop();
+			vis[u] = false;
+			for (int i = h[u]; i; i = ne[i]) {
+				int v = vs[i], w = ::ws[i];
+				if (dis[u] + w < dis[v]) {
+					dis[v] = dis[u] + w;
+					if (!vis[v])
+						q.emplace(v), vis[v] = true;
+				}
+			}
+		}
+	}
+
+priority 2000
+snippet floyd
+	LL g[N][N];
+
+	void floyd() {
+		for (int k = 1; k <= n; k++)
+			for (int i = 1; i <= n; i++)
+				for (int j = 1; j <= n; j++)
+					g[i][j] = min(g[i][j], g[i][k] + g[k][j]);
+	}
+
+		memset(g, 0x3f, sizeof g);
+		for (int i = 0; i < m; i++) {
+			int u, v, w;
+			scanf("%d%d%d", &u, &v, &w);
+			g[u][v] = min(g[u][v], (LL)w);
+		}
+		for (int i = 1; i <= n; i++)
+			g[i][i] = 0;
+
+
+priority 2000
+snippet bfs
+	int q[N], dis[N];
+	bool vis[N];
+
+	void bfs(int s) {
+		memset(dis, 0, sizeof dis);
+		memset(vis, false, sizeof vis);
+		int tt = 0, hh = 0;
+		q[tt++] = s, vis[s] = true;
+		int len = 0;
+		while (int sz = tt - hh) {
+			while (sz--) {
+				int u = q[hh++];
+				dis[u] = len;
+				for (int i = h[u]; i; i = ne[i]) {
+					int v = vs[i];
+					if (!vis[v])
+						q[tt++] = v, vis[v] = true;
+				}
+			}
+			len++;
+		}
+	}
+
+priority 2000
+snippet find
+	#include <numeric>
+	int ps[N];
+	iota(ps + 1, ps + n + 1, 1);
+
+	int find(int a) {
+		return a == ps[a] ? a : ps[a] = find(ps[a]);
+	}
+
+	void merge(int a, int b) {
+		ps[find(b)] = find(a);
+	}
+
+    #int merge(int a, int b) {
+        #int pa = find(a), pb = find(b);
+        #if (pa != pb) {
+            #ps[pb] = pa;
+            #return sz[pa] += sz[pb];
+        #}
+        #return 0;
+    #}
+
+priority 2000
+snippet sieve
+	int primes[N], cnt;
+	bool not_prime[N];
+
+	void sieve(int n) {
+		for (int i = 2; i <= n; i++) {
+			if (!not_prime[i])
+				primes[cnt++] = i;
+			for (int j = 0; primes[j] <= n / i; j++) {
+				not_prime[i * primes[j]] = true;
+				if (!(i % primes[j])) break;
+			}
+		}
+	}
+
+priority 2000
+snippet interval_sieve
+	int primes[N], cnt;
+	bool not_prime[N], vis[M];
+
+	void sieve(int n) {
+		for (int i = 2; i <= n; i++) {
+			if (!not_prime[i])
+				primes[cnt++] = i;
+			for (int j = 0; primes[j] <= n / i; j++) {
+				not_prime[primes[j] * i] = true;
+				if (!(i % primes[j])) break;
+			}
+		}
+	}
+
+	sieve(sqrt(r));
+
+	void interval_sieve(int l, int r) {
+		for (int i = 0; primes[i] <= r / primes[i]; i++) {
+			for (LL j = max(2ll, (l + primes[i] - 1) / primes[i]) * primes[i]; j <= r; j += primes[i])
+				vis[j - l] = true;
+		}
+
+		PII pmin = {0, 2e9}, pmax = {0, 0};
+		// 注意小心左端点为1的情况！！！
+		for (LL i = max(2ll, l), last = 0; i <= r; i++) {
+			if (!vis[i - l]) {
+				if (last) {
+					if (i - last < pmin.second - pmin.first)
+						pmin = {last, i};
+					if (i - last > pmax.second - pmax.first)
+						pmax = {last, i};
+				}
+				last = i;
+			}
+			else
+				vis[i - l] = false;
+		}
+	}
+
+priority 2000
+snippet gcd
+	LL gcd(LL a, LL b) {
+		return b ? gcd(b, a % b) : a;
+	}
+
+priority 2000
+snippet exgcd
+	LL exgcd(LL a, LL b, LL &x, LL &y) {
+		if (!b) {
+			x = 1, y = 0;
+			return a;
+		}
+		LL xx, yy, g = exgcd(b, a % b, xx, yy);
+		x = yy, y = xx - a / b * yy;
+		return g;
+	}
+
+	// 特解
+	LL x0 = x * c / g, y0 = y * c / g;
+	// 通解(x1 = x0 + k * b / g, y1 = y0 - k * a / g)
+
+	LL bb = abs(b / g);
+	// x取最小自然数
+	LL x1 = (x0 % bb + bb) % bb, y1 = (c - a * x1) / b;
+
+	// x,y都取自然数
+	a /= g, b /= g, c /= g, x *= c, y *= c;
+	while (x < 0)
+		x += b, y -= a;
+	while (y < 0)
+		x -= b, y += a;
+	if (x < 0)
+		cout << -1 << endl;
+	else
+		cout << x << " " << y << endl;
+
+priority 2000
+snippet lowbit
+	LL tr[N];
+
+	inline int lowbit(int a) {
+		return a & -a;
+	}
+
+	void update(int i, int a) {
+		for (; i <= n; i += lowbit(i))
+			tr[i] += a;
+	}
+
+	LL query(int i) {
+		LL res = 0;
+		for (; i; i -= lowbit(i))
+			res += tr[i];
+		return res;
+	}
+
+priority 2000
+snippet qpow
+	LL qpow(LL a, LL n) {
+		if (n < 0) return 0;
+		LL res = 1;
+		while (n) {
+			if (n & 1) (res *= a) %= MOD;
+			(a *= a) %= MOD;
+			n >>= 1;
+		}
+		return res;
+	}
+
+priority 2000
+snippet C "combination"
+	LL f[N] = {1}, inv[N];
+	for (int i = 1; i <= n; i++)
+		f[i] = (f[i - 1] * i) % MOD;
+	inv[n] = qpow(f[n], MOD - 2);
+	for (int i = n - 1; ~i; i--)
+		inv[i] = (inv[i + 1] * (i + 1)) % MOD;
+
+	LL qpow(LL a, LL n) {
+		if (n < 0) return 0;
+		LL res = 1;
+		while (n) {
+			if (n & 1) (res *= a) %= MOD;
+			(a *= a) %= MOD;
+			n >>= 1;
+		}
+		return res;
+	}
+
+	LL C(int n, int m) {
+		if (n < m) return 0;
+		return f[n] * inv[m] % MOD * inv[n - m] % MOD;
+	}
+
+	LL C(int n, int m) {
+		if (n < m) return 0;
+		if (m > n >> 1)
+			m = n - m;
+		LL res = 1;
+		for (int i = n - m + 1, j = 1; i <= n; i++, j++)
+			res = res * i / j;
+		return res;
+	}
+
+priority 2000
+snippet is_prime
+	bool is_prime(int val) {
+		if (val < 2) return false;
+		for (int i = 2; i <= val / i; i++)
+			if (!(val % i))
+				return false;
+		return true;
+	}
+
+priority 2000
+snippet hash_pair
+	struct hash_pair {
+		size_t operator()(const PII &p) const {
+			return (LL)p.first << 32 | p.second;
+		}
+	};
+
+priority 2000
+snippet joseph
+	int joseph(int n, int m) {
+		int res = 0;
+		for (int i = 2; i <= n; i++)
+			(res += m) %= i;
+		return res + 1;
+	}
+
+priority 2000
+snippet lca
+	// log2(2e5 + 10) ~= 17.6
+	int h[N], vs[M], ne[M], idx = 1, lg[N], ps[N][18], dep[N];
+
+	void add(int u, int v) {
+		vs[idx] = v, ne[idx] = h[u], h[u] = idx++;
+	}
+
+	void dfs(int u, int p) {
+		ps[u][0] = p, dep[u] = dep[p] + 1;
+		for (int i = 1; i < lg[dep[u]]; i++)
+			ps[u][i] = ps[ps[u][i - 1]][i - 1];
+		for (int i = h[u]; i; i = ne[i])
+			if (vs[i] != p) dfs(vs[i], u);
+	}
+
+	int lca(int a, int b) {
+		if (dep[a] < dep[b]) swap(a, b);
+		while (dep[a] > dep[b]) a = ps[a][lg[dep[a] - dep[b]] - 1];
+		if (a == b) return a;
+		for (int i = lg[dep[a]] - 1; ~i; i--)
+			if (ps[a][i] != ps[b][i])
+				a = ps[a][i], b = ps[b][i];
+		return ps[a][0];
+	}
+
+	int n, q;
+	scanf("%d%d", &n, &q);
+	for (int i = 1; i <= n; i++)
+		lg[i] = lg[i - 1] + ((1 << lg[i - 1]) == i);
+	for (int i = 0; i < n - 1; i++) {
+		int u, v;
+		scanf("%d%d", &u, &v);
+		add(u, v), add(v, u);
+	}
+	dfs(1, 0);
+
+priority 2000
+snippet lg
+	int lg[N];
+
+	for (int i = 1; i <= n; i++)
+		lg[i] = lg[i - 1] + ((1 << lg[i - 1]) == i);
+
+priority 2000
+snippet ijs
+	const int ijs[4][2] = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
+
+priority 2000
+snippet hash
+	using ULL = unsigned long long;
+	const int P = 131;
+
+	ULL p[N] = {1}, hs[N];
+
+	ULL f(int l, int r) {
+		return hs[r] - hs[l - 1] * p[r - l + 1];
+	}
+
+	for (int i = 1; i <= n; i++) {
+		p[i] = p[i - 1] * P;
+		hs[i] = hs[i - 1] * P + s[i];
+	}
+
+priority 2000
+snippet LL cross_product
+	LL cross_product(PII &p1, PII &p2, PII &p3) {
+		LL x1 = p2.first - p1.first, x2 = p3.first - p1.first;
+		LL y1 = p2.second - p1.second, y2 = p3.second - p1.second;
+		return abs(x1 * y2 - x2 * y1);
+	}
+
+priority 2000
+snippet color
+	int h[N], vs[M], ne[M], idx = 1, color[N];
+
+	void add(int u, int v) {
+		vs[idx] = v, ne[idx] = h[u], h[u] = idx++;
+	}
+
+	bool dfs(int u, int c) {
+		color[u] = c;
+		for (int i = h[u]; i; i = ne[i]) {
+			int v = vs[i];
+			if (!color[v]) {
+				if (!dfs(v, 3 - c)) return false;
+			}
+			else if (color[v] == c) return false;
+		}
+		return true;
+	}
+
+	bool res = true;
+	for (int i = 1; i <= n; i++) 
+		if (!color[i] && !dfs(i, 1)) {
+			res = false;
+			break;
+		}
+
+priority 2000
+snippet match
+	int h[N], vs[M], ne[M], idx = 1, match[N];
+	bool vis[N];
+
+	void add(int u, int v) {
+		vs[idx] = v, ne[idx] = h[u], h[u] = idx++;
+	}
+
+	bool find(int u) {
+		for (int i = h[u]; i; i = ne[i]) {
+			int v = vs[i];
+			if (vis[v]) continue;
+			vis[v] = true;
+			if (!match[v] || find(match[v])) {
+				match[v] = u;
+				return true;
+			}
+		}
+		return false;
+	}
+
+	int res = 0;
+	for (int i = 1; i <= n1; i++) {
+		memset(vis + 1, false, n2);
+		res += find(i);
+	}
+
+priority 2000
+snippet matrix
+	#include <vector>
+	struct Matrix {
+		int n;
+		LL arr[N][N] = {0};
+		Matrix(int n) : n(n) {}
+		Matrix(int n, int val) :n(n) {
+			if (val == 1) {
+				for (int i = 0; i < n; i++)
+					arr[i][i] = 1;
+			}
+		}
+		Matrix(int j, const vector<LL> &v) {
+			n = v.size();
+			for (int i = 0; i < n; i++)
+				arr[i][j] = v[i];
+		}
+		Matrix(int n, LL g[N][N]) : n(n) {
+			for (int i = 0; i < n; i++)
+				memcpy(arr[i], g[i], sizeof(LL) * n);
+		}
+		Matrix(const vector<vector<LL>> &v) {
+			n = v.size();
+			for (int i = 0; i < n; i++)
+				for (int j = 0; j < n; j++)
+					arr[i][j] = v[i][j];
+		}
+		Matrix &operator*=(const Matrix &m) {
+			LL res[N][N] = {0};
+			for (int i = 0; i < n; i++)
+				for (int j = 0; j < n; j++)
+					for (int k = 0; k < n; k++)
+						res[i][j] = (res[i][j] + arr[i][k] * m.arr[k][j]) % MOD;
+			memcpy(arr, res, sizeof(arr));
+			return *this;
+		}
+		Matrix &operator*(const Matrix &m) {
+			LL res[N][N] = {0};
+			for (int i = 0; i < n; i++)
+				for (int j = 0; j < n; j++)
+					for (int k = 0; k < n; k++)
+						res[i][j] = (res[i][j] + arr[i][k] * m.arr[k][j]) % MOD;
+			memcpy(arr, res, sizeof(arr));
+			return *this;
+		}
+		LL *operator[](int i) {
+			return arr[i];
+		}
+		const LL *operator[](int i) const {
+			return arr[i];
+		}
+		friend ostream &operator<<(ostream &out, const Matrix &m) {
+			for (int i = 0; i < m.n; i++) {
+				for (int j = 0; j < m.n; j++)
+					out << m[i][j] << ' ';
+				cout << '\n';
+			}
+			return out;
+		}
+		Matrix &qpow(LL n) {
+			if (n < 0) return *this = Matrix(this->n);
+			Matrix res(this->n, 1), tmp = *this;
+			while (n) {
+				if (n & 1) res *= tmp;
+				tmp *= tmp;
+				n >>= 1;
+			}
+			return *this = res;
+		}
+	};
+
+priority 2000
+snippet mul
+	LL mul(LL a, LL b) {
+		LL res = 0;
+		while (b) {
+			if (b & 1) (res += a) %= MOD;
+			(a += a) %= MOD;
+			b >>= 1;
+		}
+		return res;
+	}
+
+priority 2000
+snippet tarjan
+	struct E {
+		int u, v;
+	} es[M];
+
+	int h[N], vs[M], ne[M], idx = 1;
+	int dfn[N], low[N], stk[N], top, stamp, id[N], gid;
+	bool instk[N];
+
+	void add(int u, int v) {
+		vs[idx] = v, ne[idx] = h[u], h[u] = idx++;
+	}
+
+	void tarjan(int u) {
+		dfn[u] = low[u] = ++stamp;
+		stk[top++] = u;
+		instk[u] = true;
+		for (int i = h[u]; i; i = ne[i]) {
+			int v = vs[i];
+			if (!dfn[v]) {
+				tarjan(v);
+				low[u] = min(low[u], low[v]);
+			}
+			else if (instk[v])
+				low[u] = min(low[u], dfn[v]);
+		}
+		if (low[u] == dfn[u]) {
+			while (true) {
+				int v = stk[--top];
+				instk[v] = false;
+				id[v] = gid;
+				if (v == u) break;
+			}
+			gid++;
+		}
+	}
+
+		for (int i = 0; i < m; i++) {
+			scanf("%d%d", &es[i].u, &es[i].v);
+			add(es[i].u, es[i].v);
+		}
+
+		for (int i = 1; i <= n; i++)
+			if (!dfn[i]) tarjan(i);
+
+		idx = 1;
+		memset(h, 0, sizeof h);
+		for (int i = 0; i < m; i++)
+			if (id[es[i].u] != id[es[i].v])
+				add(id[es[i].u], id[es[i].v]);
+
+priority 2000
+snippet segment
+	struct Tag {
+		LL add = 0;
+		Tag() {}
+		Tag(LL add) : add(add) {} 
+	};
+
+	struct Node {
+		int l, r;
+		LL maxv = 1ll << 63, minv = ~(1ll << 63);
+		Tag t;
+	} tr[N << 2]; 
+
+	int arr[N];
+
+	Node merge(const Node &a, const Node &b) {
+		Node res;
+		res.maxv = max(a.maxv, b.maxv);
+		res.minv = min(a.minv, b.minv);
+		return res;
+	}
+
+	void calc(Node &a, const Tag &t) {
+		a.maxv += t.add, a.minv += t.add;
+		a.t.add += t.add;
+	}
+
+	void push_up(int u) {
+		Node res = merge(tr[u << 1], tr[u << 1 | 1]);
+		tr[u].maxv = res.maxv, tr[u].minv = res.minv;
+	}
+
+	void push_down(int u) {
+		calc(tr[u << 1], tr[u].t);
+		calc(tr[u << 1 | 1], tr[u].t);
+		tr[u].t = Tag();
+	}
+
+	void build(int u, int l, int r) {
+		tr[u].l = l, tr[u].r = r;
+		if (l == r) tr[u].maxv = tr[u].minv = arr[l];
+		else {
+			int mid = (l + r) >> 1;
+			build(u << 1, l, mid);
+			build(u << 1 | 1, mid + 1, r);
+			push_up(u);
+		}
+	}
+
+	Node query(int u, int l, int r) {
+		if (l > r) return Node();
+		if (l <= tr[u].l && tr[u].r <= r) return tr[u];
+
+		push_down(u);
+		int mid = (tr[u].l + tr[u].r) >> 1;
+		return merge(l <= mid ? query(u << 1, l, r) : Node(), r > mid ? query(u << 1 | 1, l, r) : Node());
+	}
+
+	void update(int u, int l, int r, const Tag &t) {
+		if (l <= tr[u].l && r >= tr[u].r)
+			calc(tr[u], t);
+		else {
+			push_down(u);
+			int mid = (tr[u].l + tr[u].r) >> 1;
+			if (l <= mid) update(u << 1, l, r, t);
+			if (r > mid) update(u << 1 | 1, l, r, t);
+			push_up(u);
+		}
+	}
+
+priority 2000
+snippet get_max 
+	int n, arr[N], stk[N], lmax[N], rmax[N];
+
+	void get_lmax() {
+		int top = 0;
+		for (int i = 1; i <= n; i++) {
+			while (top && arr[i] >= arr[stk[top - 1]])
+				top--;
+			lmax[i] = top ? stk[top - 1] : 0;
+			stk[top++] = i;
+		}
+	}
+
+	void get_rmax() {
+		int top = 0;
+		for (int i = n; i; i--) {
+			while (top && arr[i] >= arr[stk[top - 1]])
+				top--;
+			rmax[i] = top ? stk[top - 1] : n + 1;
+			stk[top++] = i;
+		}
+	}
+
+priority 2000
+snippet accuracy
+	const int NN = 100;
+
+	struct Val {
+		int arr[NN] = {0}, cnt = 0;
+		Val(int val) {
+			string s = to_string(val);
+			cnt = s.length();
+			for (int i = 0; i < cnt; i++)
+				arr[cnt - 1 - i] = s[i] - '0';
+		}
+		Val &operator+=(const Val &v) {
+			int c[NN] = {0};
+			for (int i = 0; i < max(cnt, v.cnt); i++) {
+				c[i] += arr[i] + v.arr[i];
+				c[i + 1] += c[i] / 10;
+				c[i] %= 10;
+			}
+			memcpy(arr, c, sizeof arr);
+			cnt = max(cnt, v.cnt) + c[cnt];
+			return *this;
+		}
+		Val &operator+(const Val &v) {
+			int c[NN] = {0};
+			for (int i = 0; i < max(cnt, v.cnt); i++) {
+				c[i] += arr[i] + v.arr[i];
+				c[i + 1] += c[i] / 10;
+				c[i] %= 10;
+			}
+			memcpy(arr, c, sizeof arr);
+			cnt = max(cnt, v.cnt) + c[cnt];
+			return *this;
+		}
+		friend ostream &operator<<(ostream &out, const Val &v) {
+			for (int i = v.cnt - 1; ~i; i--)
+				out << (char)(v.arr[i] + '0');
+			return out;
+		}
+	};
+
+priority 2000
+snippet mint
+	class Mint {
+	public:
+		LL val;
+		Mint() : Mint(0) {}
+		Mint(LL val) : val(val % MOD) {}
+		Mint operator+(const Mint &a) {return (val + a.val) % MOD;}
+		Mint &operator+=(const Mint &a) {(val += a.val) %= MOD; return *this;};
+		Mint operator-(const Mint &a) {return (val - a.val + MOD) % MOD;}
+		Mint &operator-=(const Mint &a) {val = (val - a.val + MOD) % MOD; return *this;}
+		Mint operator*(const Mint &a) {return (val * a.val) % MOD;}
+		Mint &operator*=(const Mint &a) {(val *= a.val) %= MOD; return *this;}
+		friend ostream &operator<<(ostream &out, const Mint &m) {
+			out << m.val;
+			return out;
+		}
+	};
+
+priority 2000
+snippet get_fac
+	#include <vector>
+	vector<int> fac[N];
+
+	void get_div() {
+		for (int i = 1; i <= n; i++)
+			for (int j = i; j <= n; j += i)
+				fac[j].emplace_back(i);
+	}
+
+priority 2000
+snippet segtree
+	template <typename T>
+	class Segtree {
+		inline T op(T a, T b) {
+			return gcd(a, b);
+		}
+		inline T e() {
+			return 0;
+		}
+		struct Node {
+			int l, r;
+			T val;
+		} tr[N << 2];
+		void push_up(int u) {
+			tr[u].val = op(tr[u << 1].val, tr[u << 1 | 1].val);
+		}
+	public:
+		Segtree() {}
+		Segtree(int n, T arr[N]) {build(1, n, arr);}
+		void build(int l, int r, T arr[N], int u = 1) {
+			tr[u].l = l, tr[u].r = r;
+			if (l == r) tr[u].val = arr[l];
+			else {
+				int mid = (l + r) >> 1;
+				build(l, mid, arr, u << 1);
+				build(mid + 1, r, arr, u << 1 | 1);
+				push_up(u);
+			}
+		}
+		void update(int x, T val, int u = 1) {
+			if (tr[u].l == tr[u].r)
+				tr[u].val = val;
+			else {
+				int mid = (tr[u].l + tr[u].r) >> 1;
+				update(x, val, x <= mid ? u << 1 : u << 1 | 1);
+				push_up(u);
+			}
+		}
+		T query(int l, int r, int u = 1) {
+			if (l > r) return e();
+			if (l <= tr[u].l && r >= tr[u].r) return tr[u].val;
+			int mid = (tr[u].l + tr[u].r) >> 1;
+			T res = e();
+			if (l <= mid) res = op(res, query(l, r, u << 1));
+			if (r > mid) res = op(res, query(l, r, u << 1 | 1));
+			return res;
+		}
+	};
+
+priority 2000
+snippet sqrt
+	#include <cmath>
+	LL arr[N], sum[N];
+	int bl[N], br[N], bel[N];
+
+	inline void update_block(int l, int r) {
+	}
+
+	void update(int l, int r) {
+		if (bel[l] == bel[r])
+			update_block(l, r);
+		else {
+			update_block(l, br[bel[l]]), update_block(bl[bel[r]], r);
+			for (int i = bel[l] + 1; i < bel[r]; i++)
+				update_block(bl[i], br[i]);
+		}
+	}
+
+	inline LL query_block(int l, int r) {
+	}
+
+	LL query(int l, int r) {
+		if (bel[l] == bel[r]) return query_block(l, r);
+		LL res = query_block(l, br[bel[l]]) + query_block(bl[bel[r]], r);
+		for (int i = bel[l] + 1; i < bel[r]; i++)
+			res += query_block(bl[i], br[i]);
+		return res;
+	}
+
+	int sq = sqrt(n);
+	for (int i = 1; i <= sq; i++) {
+		bl[i] = n / sq * (i - 1) + 1;
+		br[i] = n / sq * i;
+	}
+	br[sq] = n;
+	for (int i = 1; i <= sq; i++)
+		for (int j = bl[i]; j <= br[i]; j++)
+			bel[j] = i, sum[i] += arr[j];
+
+priority 2000
+snippet div_sqrt "sigma_{i = 1}^{n}(n / i)"
+	LL res = 0;
+	for (LL l = 1, r; l <= n; l = r + 1) {
+		r = n / (n / l);
+		res += (LL)n / l * (l + r) * (r - l + 1) >> 1;
+	}
+
+priority 2000
+snippet mod_sqrt "sigma_{i = 1}^{n}(k % i) = sigma_{i = 1}^{n}(k - (k / i) * i)"
+	LL res = n * k;
+	for (LL l = 1, r; l <= n; l = r + 1) {
+		if (!(k / l)) break;
+		r = min(n, k / (k / l));
+		res -= (LL)k / l * (l + r) * (r - l + 1) >> 1;
+	}
+	
+priority 2000
+snippet kmp
+	void get_nxt() {
+		for (int i = 2, j = 0; i <= m; i++) {
+			while (j && p[j + 1] != p[i]) j = nxt[j];
+			if (p[j + 1] == p[i]) j++;
+			nxt[i] = j;
+		}
+	}
+
+	void kmp() {
+		get_nxt();
+		for (int i = 1, j = 0; i <= n; i++) {
+			while (j && p[j + 1] != s[i]) j = nxt[j];
+			if (p[j + 1] == s[i]) j++;
+			if (j == m) {
+				printf("%d ", i - m);
+				j = nxt[j];
+			}
+		}
+		puts("");
+	}
+	
+priority 2000
+snippet xor_tree
+	int arr[N];
+
+	struct Node {
+		int l, r, sum, add = 0;
+	} tr[N << 2];
+
+	void push_up(int u) {
+		tr[u].sum = tr[u << 1].sum + tr[u << 1 | 1].sum;
+	}
+
+	void push_down(int u) {
+		if (tr[u].add) {
+			tr[u << 1].add ^= 1, tr[u << 1 | 1].add ^= 1;
+			tr[u << 1].sum = tr[u << 1].r - tr[u << 1].l + 1 - tr[u << 1].sum;
+			tr[u << 1 | 1].sum = tr[u << 1 | 1].r - tr[u << 1 | 1].l + 1 - tr[u << 1 | 1].sum;
+			tr[u].add = 0;
+		}
+	}
+
+	void build(int l, int r, int u = 1) {
+		tr[u].l = l, tr[u].r = r;
+		if (l == r) {
+			tr[u].sum = arr[l];
+			return;
+		}
+		int mid = (l + r) >> 1;
+		build(l, mid, u << 1);
+		build(mid + 1, r, u << 1 | 1);
+		push_up(u);
+	}
+
+	void update(int l, int r, int u = 1) {
+		if (l <= tr[u].l && r >= tr[u].r) {
+			tr[u].add ^= 1;
+			tr[u].sum = tr[u].r - tr[u].l + 1 - tr[u].sum;
+			return;
+		}
+		push_down(u);
+		int mid = (tr[u].l + tr[u].r) >> 1;
+		if (l <= mid) update(l, r, u << 1);
+		if (r > mid) update(l, r, u << 1 | 1);
+		push_up(u);
+	}
+
+	int query(int l, int r, int u = 1) {
+		if (l > r) return 0;
+		if (l <= tr[u].l && r >= tr[u].r)
+			return tr[u].sum;
+		push_down(u);
+		int mid = (tr[u].l + tr[u].r) >> 1, res = 0;
+		if (l <= mid) res += query(l, r, u << 1);
+		if (r > mid) res += query(l, r, u << 1 | 1);
+		return res;
+	}
+
+priority 2000
+snippet lps "longest palindromic subsequence"
+    int dp[N][N];
+	int get_lps(const string &s) {
+		int n = s.length();
+		for (int i = 1; i <= n; i++)
+			dp[i][i] = 1;
+		for (int len = 2; len <= n; len++)
+			for (int i = 1, j; j = i + len - 1, j <= n; i++) {
+				if (s[i] == s[j])
+					dp[i][j] = dp[i + 1][j - 1] + 2;
+				else
+					dp[i][j] = max(dp[i + 1][j], dp[i][j - 1]);
+			}
+		return dp[1][n];
+	}
+
+priority 2000
+snippet log
+	int log[N];
+
+		log[2] = 1;
+		for (int i = 3; i <= n; i++)
+			log[i] = log[i >> 1] + 1;
+
+priority 2000
+snippet st
+	int st[N][21], log[N];
+
+		log[2] = 1;
+		for (int i = 3; i <= n; i++)
+			log[i] = log[i >> 1] + 1;
+		for (int j = 1; j <= 20; j++)
+			for (int i = 1; i + (1 << j) - 1 <= n; i++)
+				st[i][j] = max(st[i][j - 1], st[i + (1 << (j - 1))][j - 1]);
+	
+	LL query(int l, int r) {
+		int s = log[r - l + 1];
+		return max(st[l][s], st[r - (1 << s) + 1][s]);
+	}
+
+priority 2000
+snippet read
+	template<class T> inline void read(T &res)
+	{
+		char c; T flag = 1;
+		while ((c = getchar()) < '0' || c > '9') if (c == '-') flag = -1; res = c - '0';
+		while ((c = getchar()) >= '0' && c <= '9') res = res * 10 + c - '0'; res *= flag;
+	}
+
+priority 2000
+snippet topsort
+    int h[N], vs[N], ne[N], idx = 1, ind[N];
+    int q[N], hh = 0, tt = 0;
+
+    void add(int u, int v) {
+        vs[idx] = v, ne[idx] = h[u], h[u] = idx++, ind[v]++;
+    }
+
+    bool topsort(int n) {
+        for (int u = 0; u < n; u++)
+            if (!ind[u])
+                q[tt++] = u;
+
+        while (tt > hh) {
+            int u = q[hh++];
+            for (int i = h[u]; i; i = ne[i]) {
+                int v = vs[i];
+                if (!--ind[v])
+                    q[tt++] = v;
+            }
+        }
+        return tt == n;
+    }
+
+priority 2000
+snippet split
+	vector<string> split(const string &s, char c) {
+		vector<string> res;
+		stringstream ss(s);
+		string tmp;
+		while (getline(ss, tmp, c))
+			res.emplace_back(tmp);
+		return res;
+	}
+
+priority 2000
+snippet merge_sort
+	int arr[N], tmp[N];
+
+	void merge_sort(int l, int r) {
+		if (l >= r) return;
+		int mid = (l + r) >> 1;
+		merge_sort(l, mid), merge_sort(mid + 1, r);
+		int i = l, j = mid + 1, k = 0;
+		while (i <= mid && j <= r)
+			tmp[k++] = arr[i] < arr[j] ? arr[i++] : arr[j++];
+		memcpy(tmp + k, arr + i, sizeof(int) * (mid - i + 1));
+		memcpy(tmp + k, arr + j, sizeof(int) * (r - j + 1));
+		memcpy(arr + l, tmp, sizeof(int) * (r - l + 1));
+	}
+
+priority 2000
+snippet insert_sort
+	void insert_sort(int l, int r) {
+		for (int i = l + 1, j; i <= r; i++) {
+			int val = arr[i];
+			for (j = i - 1; j >= 0 && arr[j] > val; j--)
+				swap(arr[j], arr[j + 1]);
+			arr[j + 1] = val;
+		}
+	}
+
+priority 2000
+snippet heap_sort
+	int n, m, h[N];
+
+	void down(int u) {
+		int v = u;
+		if ((u << 1) <= n && h[u << 1] < h[v]) v = u << 1;
+		if ((u << 1 | 1) <= n && h[u << 1 | 1] < h[v]) v = u << 1 | 1;
+		if (u != v)
+			swap(h[u], h[v]), down(v);
+	}
+
+		for (int i = n >> 1; i; i--)
+			down(i);
+
+		while (m--) {
+			printf("%d ", h[1]);
+			h[1] = h[n--];
+			down(1);
+		}
+		puts("");
+
+priority 2000
+snippet quick_sort
+	int n, arr[N];
+
+	void quick_sort(int l, int r) {
+		if (l >= r) return;
+		int i = l, j = r, pivot = arr[l];
+		while (i < j) {
+			while (arr[j] >= pivot && i < j) j--;
+			while (arr[i] <= pivot && i < j) i++;
+			if (i < j) swap(arr[i], arr[j]);
+		}
+		swap(arr[l], arr[i]);
+		quick_sort(l, i - 1), quick_sort(j + 1, r);
+	}
+
+priority 2000
+snippet index_sort
+	int tmp[16][N];
+
+	void index_sort() {
+		for (int i = 0; i < 8; i++) {
+			int sz[16] = {0};
+			for (int j = 0; j < n; j++) {
+				int key = (arr[j] >> (i << 2)) & 15;
+				tmp[key][sz[key]++] = arr[j];
+			}
+			int p = 0;
+			for (int j = 0; j < 16; j++)
+				for (int k = 0; k < sz[j]; k++)
+					arr[p++] = tmp[j][k];
+		}
+	}
+
+# d = (maxv - minv + 1 + n - 1) / n = (maxv - minv) / n + 1;
+# id = (arr[i] - minv) / d;
+priority 2000
+snippet bucket_sort
+	vector<int> bucket[N];
+
+	void bucket_sort() {
+		int maxv = -2e9, minv = 2e9;
+		for (int i = 0; i < n; i++) {
+			maxv = max(maxv, arr[i]);
+			minv = min(minv, arr[i]);
+		}
+		int d = (maxv - minv) / n + 1;
+		for (int i = 0; i < n; i++)
+			bucket[(arr[i] - minv) / d].emplace_back(arr[i]);
+
+		int p = 0;
+		for (int i = 0; i < n; i++) {
+			sort(bucket[i].begin(), bucket[i].end());
+			for (int num : bucket[i])
+				arr[p++] = num;
+		}
+	}
+
+priority 2000
+snippet prim "O(n^2)"
+	int n, m, dis[N], g[N][N];
+	bool vis[N];
+
+	int prim() {
+		memset(dis, 0x3f, sizeof dis);
+		memset(vis, false, sizeof vis);
+		dis[1] = 0;
+		int res = 0;
+		for (int i = 0; i < n; i++) {
+			int u = -1;
+			for (int v = 1; v <= n; v++) {
+				if (!vis[v] && (u == -1 || dis[u] > dis[v]))
+					u = v;
+			}
+			if (dis[u] == INF)
+				return INF;
+			vis[u] = true;
+			res += dis[u];
+
+			for (int v = 1; v <= n; v++)
+				dis[v] = min(dis[v], g[u][v]);
+		}
+
+		return res;
+	}
+
+priority 2000
+snippet kruskal "O(mlogm)"
+	int n, m, ps[N];
+
+	struct Edge {
+		int u, v, w;
+		bool operator<(const Edge &e) const {
+			return w < e.w;
+		}
+	} es[M];
+
+	int find(int a) {
+		return a == ps[a] ? a : ps[a] = find(ps[a]);
+	}
+
+	void merge(int a, int b) {
+		ps[find(b)] = find(a);
+	}
+
+	int kruskal() {
+		iota(ps + 1, ps + n + 1, 1);
+		int cnt = n - 1, res = 0;
+		for (int i = 0; i < m; i++) {
+			int u = es[i].u, v = es[i].v, w = es[i].w;
+			if (find(u) != find(v)) {
+				merge(u, v);
+				res += w;
+				if (!--cnt)
+					break;
+			}
+		}
+
+		return cnt ? -1 : res;
+	}
+
+	int n, m, k;
+	int dis[N], bak[N];
+
+	struct Edge {
+		int u, v, w;
+	} es[M];
+
+priority 2000
+snippet bellman_ford "O(nm)"
+	int n, m;
+	int dis[N], bak[N];
+
+	struct Edge {
+		int u, v, w;
+	} es[M];
+
+	int bellman_ford(int k) {
+		memset(dis, 0x3f, sizeof dis);
+		dis[1] = 0;
+		for (int i = 0; i < k; i++) {
+			memcpy(bak, dis, sizeof dis);
+			for (int j = 0; j < m; j++) {
+				int u = es[j].u, v = es[j].v, w = es[j].w;
+				dis[v] = min(dis[v], bak[u] + w);
+			}
+		}
+
+		return dis[n];
+	}
+
+priority 2000
+snippet max_intervals
+	int q[N], res[N];
+
+	int max_intervals(vector<int> &arr, int k) {
+		int n = arr.size(), hh = 0, tt = 0, p = 0;
+		for (int i = 0; i < n; i++) {
+			while (tt - hh && i - q[hh] >= k) hh++;
+			while (tt - hh && arr[i] >= arr[q[tt - 1]]) tt--;
+			q[tt++] = i;
+			if (i >= k - 1)
+				res[p++] = arr[q[hh]];
+		}
+		return p;
+	}
+
+priority 2000
+snippet get_lmin
+	int stk[N], l[N];
+
+	void get_lmin() {
+		int top = 0;
+		for (int i = 0; i < n; i++) {
+			while (top && arr[i] <= arr[stk[top - 1]])
+				top--;
+			l[i] = top ? stk[top - 1] : -1;
+			stk[top++] = i;
+		}
+	}
+
+priority 2000
+snippet lis
+	int tmp[N];
+
+	int lis() {
+		int cnt = 0;
+		for (int i = 0; i < n; i++) {
+			if (!cnt || tmp[cnt - 1] < arr[i])
+				tmp[cnt++] = arr[i];
+			else
+				*lower_bound(tmp, tmp + cnt, arr[i]) = arr[i];
+		}
+		return cnt;
+	}
+
+priority 2000
+snippet trie
+	int trie[N][26], cnt[N], idx = 1;
+	char s[M];
+
+	void insert() {
+		int p = 0;
+		for (int i = 0; s[i]; i++) {
+			if (!trie[p][s[i] - 'a'])
+				trie[p][s[i] - 'a'] = idx++;
+			p = trie[p][s[i] - 'a'];
+		}
+		cnt[p]++;
+	}
+
+	int query() {
+		int p = 0;
+		for (int i = 0; s[i]; i++) {
+			if (!trie[p][s[i] - 'a'])
+				return 0;
+			p = trie[p][s[i] - 'a'];
+		}
+		return cnt[p];
+	}
+
+	int prefix() {
+		int p = 0, res = 0;
+		for (int i = 0; s[i]; i++) {
+			if (!trie[p][s[i] - 'a']) break;
+			p = trie[p][s[i] - 'a'];
+			res += cnt[p];
+		}
+		return res;
+	}
+
+priority 2000
+snippet tree_diameter
+	int dp1[N] = {0}, dp2[N] = {0}, res = -2e9;
+
+	void dfs(int u, int p) {
+		for (int i = h[u]; i; i = ne[i]) {
+			int v = vs[i], w = ::ws[i];
+			if (v == p) continue;
+			dfs(v, u);
+			int len = dp1[v] + w;
+			if (len > dp1[u])
+				dp2[u] = dp1[u], dp1[u] = len;
+			else if (len > dp2[u])
+				dp2[u] = len;
+		}
+
+		res = max(res, dp1[u] + dp2[u]);
+	}
+
+priority 2000
+snippet discretization
+
+	void discretization(vector<int> &v) {
+	}
+
+priority 2000
+snippet binary_search
+
+	int l = 0, r = n;
+	while (l < r) {
+		int mid = (l + r) >> 1;
+		if (check(mid))
+			r = mid;
+		else
+			l = mid + 1;
+	}
+	return l;
+
+	int l = 0, r = n;
+	while (l < r) {
+		int mid = (l + r + 1) >> 1;
+		if (check(mid))
+			l = mid;
+		else
+			r = mid - 1;
+	}
+	return l;
+
+priority 2000
+snippet get_factors
+
+	vector<int> get_factors(int n) {
+		vector<int> res;
+		for (int i = 1; i <= sqrt(n); i++) {
+			if (!(n % i)) {
+				res.emplace_back(i);
+				if (n / i != i)
+					res.emplace_back(n / i);
+			}
+		}
+		return res;
+	}

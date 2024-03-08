@@ -1,0 +1,51 @@
+return {
+	"hrsh7th/nvim-cmp",
+	config = function()
+		local cmp = require("cmp")
+		local luasnip = require("luasnip")
+
+		require("luasnip/loaders/from_vscode").lazy_load()
+
+		vim.opt.completeopt = "menu,menuone,noselect"
+
+		cmp.setup({
+			snippet = {
+				expand = function(args)
+					luasnip.lsp_expand(args.body)
+				end,
+			},
+			mapping = cmp.mapping.preset.insert({
+				["<S-Tab>"] = cmp.mapping.select_prev_item(), -- previous suggestion
+				["<Tab>"] = cmp.mapping.select_next_item(), -- next suggestion
+				-- ["<C-k>"] = cmp.mapping.scroll_docs(-4),
+				-- ["<C-j>"] = cmp.mapping.scroll_docs(4),
+				-- ["<C-Space>"] = cmp.mapping.complete(), -- show completion suggestions
+				-- ["<C-e>"] = cmp.mapping.abort(), -- close completion window
+				["<CR>"] = cmp.mapping.confirm({ select = true }),
+			}),
+			-- sources for autocompletion
+			sources = cmp.config.sources({
+				{ name = "nvim_lsp" }, -- lsp
+				{ name = "luasnip" }, -- snippets
+				{ name = "buffer" }, -- text within current buffer
+				{ name = "path" }, -- file system paths
+				{ name = "vim-dadbod-completion" },
+				{ name = "copilot" },
+			}),
+		})
+	end,
+	dependencies = {
+		"hrsh7th/cmp-nvim-lsp",
+		"hrsh7th/cmp-buffer",
+		"hrsh7th/cmp-path",
+		"saadparwaiz1/cmp_luasnip",
+		{
+
+			"L3MON4D3/LuaSnip",
+			-- follow latest release.
+			version = "2.*", -- Replace <CurrentMajor> by the latest released major (first number of latest release)
+			-- install jsregexp (optional!).
+			build = "make install_jsregexp",
+		},
+	},
+}
