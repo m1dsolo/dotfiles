@@ -1,6 +1,4 @@
-local function keymap(m, k, v)
-	vim.keymap.set(m, k, v, { noremap = true, silent = true })
-end
+local keymap = require("utils").keymap
 
 -- move
 keymap("n", "H", "5h")
@@ -42,3 +40,4 @@ keymap("n", "N", "Nzz")
 keymap("n", "<leader><CR>", ":nohls<CR>")
 keymap("n", "cc", "<CMD>write<CR><CMD>:!c %<CR><CR>")
 keymap("t", "<Esc>", "<C-\\><C-n>")
+keymap("n", "Q", ":wqa<CR>")

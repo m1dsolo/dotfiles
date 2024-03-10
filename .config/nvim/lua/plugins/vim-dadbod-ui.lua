@@ -20,5 +20,16 @@ return {
 				Columns = "desc {table};",
 			},
 		}
+		vim.g.db_ui_disable_mappings = 1
+	end,
+	keys = function()
+		return {
+			{ "<leader>d", "<cmd>DBUIToggle<CR>", { noremap = true, slient = true } },
+			{ "<leader><leader>", "<Plug>(DBUI_ExecuteQuery)", mode = { "n", "v" }, { noremap = true, slient = true } },
+			{ "<Return>", "<Plug>(DBUI_SelectLine)", { noremap = true, slient = true } },
+			{ "d", "<Plug>(DBUI_DeleteLine)", ft = "dbui", { noremap = true, slient = true } },
+			{ "A", "<Plug>(DBUI_AddConnection)", ft = "dbui", { noremap = true, slient = true } },
+			{ "<Return>", "<Plug>(DBUI_SelectLine)", ft = "dbui" },
+		}
 	end,
 }
