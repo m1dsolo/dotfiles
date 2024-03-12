@@ -3,8 +3,8 @@ return {
 	opts = {
 		suggestion = { enable = false },
 		panel = { enable = false },
-        filetypes = {
-            markdown = true,
-        }
+		filetypes = {
+			markdown = true,
+		},
 	},
 }

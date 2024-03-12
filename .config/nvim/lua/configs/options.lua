@@ -9,7 +9,7 @@ local options = {
 	completeopt = "menuone,noinsert,noselect",
 	cursorline = false,
 	list = false, -- show non-printable char
-    conceallevel = 1,
+	conceallevel = 1,
 
 	-- edit
 	expandtab = true,

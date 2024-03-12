@@ -25,43 +25,44 @@ return {
 			},
 			mapping = cmp.mapping.preset.insert({
 				["<S-Tab>"] = cmp.mapping.select_prev_item(), -- previous suggestion
-				["<Tab>"] = vim.schedule_wrap(function(fallback)
-					if cmp.visible() and has_words_before() then
-						cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
-					else
-						fallback()
-					end
-				end),
+				["<Tab>"] = cmp.mapping.select_next_item(), -- next suggestion
+				-- ["<Tab>"] = vim.schedule_wrap(function(fallback)
+				-- 	if cmp.visible() and has_words_before() then
+				-- 		cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
+				-- 	else
+				-- 		fallback()
+				-- 	end
+				-- end),
 				-- ["<C-k>"] = cmp.mapping.scroll_docs(-4),
 				-- ["<C-j>"] = cmp.mapping.scroll_docs(4),
-				-- ["<C-Space>"] = cmp.mapping.complete(), -- show completion suggestions
+				["<C-c>"] = cmp.mapping.complete(),
 				-- ["<C-e>"] = cmp.mapping.abort(), -- close completion window
 				["<CR>"] = cmp.mapping.confirm({ select = true }),
 			}),
 			-- sources for autocompletion
 			sources = cmp.config.sources({
-                { name = "luasnip" },
-                { name = "copilot" },
-                { name = "path" },
-                { name = "nvim_lsp" },
-                {
-                    name = "buffer",
-                    option = {
-                        -- get visible buffers
-                        -- get_bufnrs = function()
-                        -- 	local bufs = {}
-                        -- 	for _, win in ipairs(vim.api.nvim_list_wins()) do
-                        -- 		bufs[vim.api.nvim_win_get_buf(win)] = true
-                        -- 	end
-                        -- 	return vim.tbl_keys(bufs)
-                        -- end,
-                        -- get all buffers
-                        get_bufnrs = function()
-                            return vim.api.nvim_list_bufs()
-                        end,
-                    },
-                },
-                { name = "vim-dadbod-completion" },
+				{ name = "luasnip" },
+				{ name = "copilot", keyword_length = 0 },
+				{ name = "path" },
+				{ name = "nvim_lsp" },
+				{
+					name = "buffer",
+					option = {
+						-- get visible buffers
+						-- get_bufnrs = function()
+						-- 	local bufs = {}
+						-- 	for _, win in ipairs(vim.api.nvim_list_wins()) do
+						-- 		bufs[vim.api.nvim_win_get_buf(win)] = true
+						-- 	end
+						-- 	return vim.tbl_keys(bufs)
+						-- end,
+						-- get all buffers
+						get_bufnrs = function()
+							return vim.api.nvim_list_bufs()
+						end,
+					},
+				},
+				{ name = "vim-dadbod-completion" },
 			}),
 		})
 	end,
