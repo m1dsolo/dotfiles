@@ -22,15 +22,15 @@ return {
 		}
 		vim.g.db_ui_disable_mappings = 1
 
-        -- dbout no fold
-	    local group = vim.api.nvim_create_augroup("dbui", { clear = true })
-        vim.api.nvim_create_autocmd({ "FileType" }, {
-            pattern = "dbout",
-            group = group,
-            callback = function()
-                vim.wo.foldenable = false
-            end,
-        })
+		-- dbout no fold
+		local group = vim.api.nvim_create_augroup("my_dbui", { clear = true })
+		vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
+			pattern = "*.dbout",
+			group = group,
+			callback = function()
+				vim.o.foldenable = false
+			end,
+		})
 	end,
 	keys = function()
 		return {

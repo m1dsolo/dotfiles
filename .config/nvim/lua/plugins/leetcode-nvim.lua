@@ -15,6 +15,8 @@ return {
 			"3rd/image.nvim",
 			opts = {
 				backend = "ueberzug",
+				max_width_window_percentage = 100,
+				window_overlap_clear_enabled = true,
 			},
 			init = function()
 				package.path = package.path .. ";" .. vim.fn.expand("$HOME") .. "/.luarocks/share/lua/5.1/?/init.lua;"
