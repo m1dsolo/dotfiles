@@ -31,8 +31,8 @@ return {
 		},
 		console = {
 			size = {
-				width = "50%",
-				height = "50%",
+				width = "90%",
+				height = "75%",
 			},
 			result = {
 				size = "60%",
