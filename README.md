@@ -1,6 +1,12 @@
 ## Induction
 
-- os: Arch Linux
+This repository is where I store my personal dotfiles, maybe you can find some *interestring stuff* here.
+
+### My personal environment
+
+- os: [Arch Linux](https://archlinux.org/)
+- window manager: [DWM](https://dwm.suckless.org/)
+- terminal: [ST](https://st.suckless.org/)
 
 ## install
 
@@ -47,3 +53,4 @@ see more in [vim-dadbod-ui](https://github.com/CopilotC-Nvim/CopilotChat.nvim).
 4. algorithm template snippets
 
 see more in [algorithm.snippets](./.config/nvim/snippets/cpp/algorithm.snippets)
+
