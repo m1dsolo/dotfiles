@@ -37,7 +37,18 @@ return {
 				-- ["<C-j>"] = cmp.mapping.scroll_docs(4),
 				["<C-c>"] = cmp.mapping.complete(),
 				-- ["<C-e>"] = cmp.mapping.abort(), -- close completion window
-				["<CR>"] = cmp.mapping.confirm({ select = true }),
+				-- ["<CR>"] = cmp.mapping.confirm({ select = true }),
+				["<CR>"] = cmp.mapping({
+					i = function(fallback)
+						if cmp.visible() and cmp.get_active_entry() then
+							cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false })
+						else
+							fallback()
+						end
+					end,
+					s = cmp.mapping.confirm({ select = true }),
+					c = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true }),
+				}),
 			}),
 			-- sources for autocompletion
 			sources = cmp.config.sources({
