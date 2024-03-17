@@ -6,7 +6,20 @@ return {
 	dependencies = {
 		"nvim-lua/plenary.nvim",
 	},
+	init = function()
+		vim.keymap.set("n", "gf", function()
+			if require("obsidian").util.cursor_on_markdown_link() then
+				return "<cmd>ObsidianFollowLink<CR>"
+			else
+				return "gf"
+			end
+		end, { noremap = false, expr = true })
+	end,
 	opts = {
+		completion = {
+			nvim_cmp = true,
+			min_chars = 2,
+		},
 		workspaces = {
 			{
 				name = "vault",
@@ -19,12 +32,6 @@ return {
 			time_format = "%H:%M",
 		},
 		mappings = {
-			["gf"] = {
-				action = function()
-					return require("obsidian").util.gf_passthrough()
-				end,
-				opts = { noremap = false, expr = true, buffer = true },
-			},
 			["p"] = {
 				action = function()
 					local function IsPngImage(contents)

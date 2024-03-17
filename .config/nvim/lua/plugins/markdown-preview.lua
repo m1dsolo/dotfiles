@@ -12,5 +12,6 @@ return {
 		vim.g.mkdp_browser = ""
 		vim.g.mkdp_echo_preview_url = true
 		vim.g.mkdp_page_title = "${name}"
+		vim.g.mkdp_images_path = vim.fn.expand("~") .. "/vault/"
 	end,
 }
