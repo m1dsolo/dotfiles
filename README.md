@@ -12,7 +12,7 @@ This repository is where I store my personal dotfiles, maybe you can find some *
 
 ### neovim
 
-For leetcode.nvim to display images
+Add image support to neovim.
 ```bash
 sudo pacman -S imagemagick luarocks lua51
 yay -S ueberzugpp

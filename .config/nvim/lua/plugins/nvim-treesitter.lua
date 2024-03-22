@@ -24,6 +24,7 @@ return {
                 "yaml",
                 "json",
                 "dockerfile",
+                "diff",
             },
             auto_install = true,
             highlight = {
