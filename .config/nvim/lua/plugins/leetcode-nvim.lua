@@ -1,3 +1,5 @@
+local keymap = require("utils").keymap
+
 return {
 	"kawre/leetcode.nvim",
 	build = ":TSUpdate html",
@@ -90,13 +92,15 @@ return {
 		},
 		image_support = true,
 	},
-	keys = {
-		{ "<leader>'", ":Leet run<cr>" },
-		{ "<leader><cr>", ":Leet submit<cr>" },
-		{ "<leader>o", ":Leet open<cr>" },
-		{ "<leader>i", ":Leet info<cr>" },
-		{ "<leader>l", ":Leet list<cr>" },
-		{ "<leader>r", ":Leet reset<cr>" },
-		{ "<leader>c", ":Leet console<cr>" },
-	},
+	config = function(_, opts)
+		keymap("n", "<leader>'", ":Leet run<cr>")
+		keymap("n", "<leader><cr>", ":Leet submit<cr>")
+		keymap("n", "<leader>o", ":Leet open<cr>")
+		keymap("n", "<leader>i", ":Leet info<cr>")
+		keymap("n", "<leader>l", ":Leet list<cr>")
+		keymap("n", "<leader>r", ":Leet reset<cr>")
+		keymap("n", "<leader>c", ":Leet console<cr>")
+
+		require("leetcode").setup(opts)
+	end,
 }
