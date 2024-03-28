@@ -1389,3 +1389,11 @@ snippet get_factors
 		}
 		return res;
 	}
+
+
+priority 2000
+snippet inv
+
+	LL inv(int a) {
+		return a == 1 ? 1 : (LL)(P - P / a) * inv(P % a) % P;
+	}
