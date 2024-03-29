@@ -1,14 +1,10 @@
 local keymap = require("utils").keymap
 
 -- move
-keymap("n", "H", "5h")
-keymap("n", "J", "5j")
-keymap("n", "K", "5k")
-keymap("n", "L", "5l")
-keymap("v", "H", "5h")
-keymap("v", "J", "5j")
-keymap("v", "K", "5k")
-keymap("v", "L", "5l")
+keymap({ "n", "v" }, "H", "5h")
+keymap({ "n", "v" }, "J", "5j")
+keymap({ "n", "v" }, "K", "5k")
+keymap({ "n", "v" }, "L", "5l")
 
 -- split
 keymap("n", "sh", ":set nosplitright<CR>:vsplit<CR>")

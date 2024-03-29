@@ -1044,6 +1044,8 @@ snippet split
 		string tmp;
 		while (getline(ss, tmp, c))
 			res.emplace_back(tmp);
+		if (s.size() && s.back() == c)
+			res.emplace_back("");
 		return res;
 	}
 
