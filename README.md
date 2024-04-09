@@ -56,7 +56,3 @@ see more in [vim-dadbod-ui](https://github.com/CopilotC-Nvim/CopilotChat.nvim).
 
 see more in [obsidian.nvim](https://github.com/epwalsh/obsidian.nvim) and [image.nvim](https://github.com/3rd/image.nvim).
 
-5. algorithm template snippets
-
-see more in [algorithm.snippets](./.config/nvim/snippets/cpp/algorithm.snippets).
-

@@ -48,8 +48,8 @@ return {
 		store_selection_keys = "<Tab>",
 	},
 	config = function()
-		require("luasnip.loaders.from_lua").lazy_load({ paths = "~/.config/nvim/snippets" })
-		require("luasnip.loaders.from_snipmate").lazy_load({ paths = "~/.config/nvim/snippets" })
+		require("luasnip.loaders.from_lua").lazy_load({ paths = { "~/.config/nvim/snippets" } })
+		require("luasnip.loaders.from_snipmate").lazy_load({ paths = { "~/.config/nvim/snippets/algorithm" } })
 
 		-- press u to only undo 1 level?
 		local auto_expand = require("luasnip").expand_auto
