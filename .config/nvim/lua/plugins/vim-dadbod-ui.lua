@@ -1,3 +1,5 @@
+local keymap = require("utils").keymap
+
 return {
 	"kristijanhusak/vim-dadbod-ui",
 	dependencies = {
@@ -34,7 +36,7 @@ return {
 	end,
 	keys = function()
 		return {
-			{ "<leader>d", "<cmd>DBUIToggle<CR>", { noremap = true, slient = true } },
+			{ "<leader>q", "<cmd>DBUIToggle<CR>", { noremap = true, slient = true } },
 			{ "<leader><leader>", "<Plug>(DBUI_ExecuteQuery)", mode = { "n", "v" }, { noremap = true, slient = true } },
 			{ "<C-s>", "<Plug>(DBUI_SaveQuery)", { noremap = true, slient = true } },
 			{ "d", "<Plug>(DBUI_DeleteLine)", ft = "dbui", { noremap = true, slient = true } },

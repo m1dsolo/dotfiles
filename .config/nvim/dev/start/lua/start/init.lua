@@ -1,3 +1,5 @@
+local keymap = require("utils").keymap
+
 local M = {}
 
 function M.setup(opts)
@@ -30,8 +32,8 @@ function M.setup(opts)
 	-- auto formatting on save
 	vim.api.nvim_create_autocmd("BufWritePost", {
 		group = group,
-		callback = function()
-			local efm = vim.lsp.get_active_clients({ name = "efm" })
+		callback = function(ev)
+			local efm = vim.lsp.get_active_clients({ name = "efm", bufnr = ev.buf })
 
 			if vim.tbl_isempty(efm) then
 				return
@@ -103,8 +105,8 @@ function M.setup(opts)
 		pattern = { "*.cpp" },
 		group = group,
 		callback = function()
-			-- auto open data file
-			vim.keymap.set("n", "<leader>d", function()
+			-- auto open input data file
+			keymap("n", "<leader>i", function()
 				local exists = false
 				for _, win in ipairs(vim.fn.getwininfo()) do
 					local name = vim.api.nvim_buf_get_name(win.bufnr)
@@ -119,7 +121,7 @@ function M.setup(opts)
 				if not exists then
 					vim.cmd("botright vsplit ~/.cache/data")
 				end
-			end, { noremap = true, silent = true })
+			end)
 		end,
 	})
 

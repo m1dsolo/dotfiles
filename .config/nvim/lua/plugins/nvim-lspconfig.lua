@@ -113,19 +113,22 @@ return {
 		local shfmt = require("efmls-configs.formatters.shfmt")
 		local hadolint = require("efmls-configs.linters.hadolint")
 		local sql_formatter = require("efmls-configs.formatters.sql-formatter")
+		local clang_format = require("efmls-configs.formatters.clang_format")
+
+		local languages = {
+			c = { clang_format },
+			cpp = { clang_format },
+			lua = { stylua },
+			json = { eslint, fixjson },
+			jsonc = { eslint, fixjson },
+			sh = { shellcheck, shfmt },
+			markdown = { prettier_d },
+			docker = { hadolint, prettier_d },
+			sql = { sql_formatter },
+		}
 
 		lspconfig.efm.setup({
-			filetypes = {
-				"lua",
-				"python",
-				"json",
-				"jsonc",
-				"sh",
-				"markdown",
-				"docker",
-				"c",
-				"cpp",
-			},
+			filetypes = vim.tbl_keys(languages),
 			init_options = {
 				documentFormatting = true,
 				documentRangeFormatting = true,
@@ -135,15 +138,7 @@ return {
 				completion = true,
 			},
 			settings = {
-				languages = {
-					lua = { stylua },
-					json = { eslint, fixjson },
-					jsonc = { eslint, fixjson },
-					sh = { shellcheck, shfmt },
-					markdown = { prettier_d },
-					docker = { hadolint, prettier_d },
-					sql = { sql_formatter },
-				},
+				languages = languages,
 			},
 		})
 	end,
