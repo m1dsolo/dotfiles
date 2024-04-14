@@ -114,6 +114,9 @@ return {
 		local hadolint = require("efmls-configs.linters.hadolint")
 		local sql_formatter = require("efmls-configs.formatters.sql-formatter")
 		local clang_format = require("efmls-configs.formatters.clang_format")
+		local fs = require("efmls-configs.fs")
+		clang_format["formatCommand"] =
+			string.format("%s --style=\"{BasedOnStyle: Google, IndentWidth: 4}\" '${INPUT}'", fs.executable("clang-format"))
 
 		local languages = {
 			c = { clang_format },
