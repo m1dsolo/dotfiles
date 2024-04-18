@@ -71,9 +71,9 @@ function M.setup(opts)
 	vim.api.nvim_create_autocmd({ "BufEnter" }, {
 		pattern = "*",
 		group = group,
-        callback = function()
-            vim.opt.formatoptions:remove({ "o", "c", "r" })
-        end,
+		callback = function()
+			vim.opt.formatoptions:remove({ "o", "c", "r" })
+		end,
 	})
 
 	-- cpp
