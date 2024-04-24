@@ -81,24 +81,26 @@ function M.setup(opts)
 		pattern = { "*.cpp" },
 		group = group,
 		callback = function()
-			local lines = {
-				"#include <iostream>",
-				"#include <algorithm>",
-				"#include <cstring>",
-				"",
-				"using namespace std;",
-				"using LL = long long;",
-				"using PII = pair<int, int>;",
-				"",
-				"int main() {",
-				"\t",
-				"\t",
-				"\treturn 0;",
-				"}",
-			}
-			vim.api.nvim_buf_set_lines(0, 0, -1, false, lines)
-			vim.api.nvim_win_set_cursor(0, { 10, 4 })
-			-- vim.cmd("startinsert")
+            if vim.fn.expand("%:t"):match("^%d+%.cpp$") or vim.fn.expand("%:t"):match("^%a%.cpp$") then
+                local lines = {
+                    "#include <iostream>",
+                    "#include <algorithm>",
+                    "#include <cstring>",
+                    "",
+                    "using namespace std;",
+                    "using LL = long long;",
+                    "using PII = pair<int, int>;",
+                    "",
+                    "int main() {",
+                    "\t",
+                    "\t",
+                    "\treturn 0;",
+                    "}",
+                }
+                vim.api.nvim_buf_set_lines(0, 0, -1, false, lines)
+                vim.api.nvim_win_set_cursor(0, { 10, 4 })
+                -- vim.cmd("startinsert")
+            end
 		end,
 	})
 	vim.api.nvim_create_autocmd({ "BufEnter" }, {
