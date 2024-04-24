@@ -9,22 +9,23 @@ return {
 		local function keymap(m, k, v)
 			vim.keymap.set(m, k, v, { noremap = true, silent = true })
 		end
-		keymap("n", "gf", vim.diagnostic.open_float)
-		keymap("n", "gN", vim.diagnostic.goto_prev)
-		keymap("n", "gn", vim.diagnostic.goto_next)
-		keymap("n", "gl", vim.diagnostic.setloclist)
+		keymap("n", "<leader>gf", vim.diagnostic.open_float)
+		keymap("n", "<leader>gN", vim.diagnostic.goto_prev)
+		keymap("n", "<leader>gn", vim.diagnostic.goto_next)
+		keymap("n", "<leader>gl", vim.diagnostic.setloclist)
 
 		local function on_attach(client, bufnr)
 			local function keymap(m, k, v)
 				vim.keymap.set(m, k, v, { noremap = true, silent = true, buffer = bufnr })
 			end
-			keymap("n", "gD", vim.lsp.buf.declaration)
-			keymap("n", "gd", vim.lsp.buf.definition)
-			keymap("n", "gh", vim.lsp.buf.hover)
-			keymap("n", "gi", vim.lsp.buf.implementation)
-			keymap("n", "gr", vim.lsp.buf.references)
-			keymap("n", "gt", vim.lsp.buf.type_definition)
-			keymap("n", "gs", vim.lsp.buf.signature_help)
+			keymap("n", "<leader>gD", vim.lsp.buf.declaration)
+			keymap("n", "<leader>gd", vim.lsp.buf.definition)
+			keymap("n", "<leader>gh", vim.lsp.buf.hover)
+			keymap("n", "<leader>gi", vim.lsp.buf.implementation)
+			keymap("n", "<leader>gr", vim.lsp.buf.references)
+			keymap("n", "<leader>gt", vim.lsp.buf.type_definition)
+			keymap("n", "<leader>gs", vim.lsp.buf.signature_help)
+			keymap("n", "<leader>gc", vim.lsp.buf.code_action)
 			-- keymap("n", "<leader>ff", vim.lsp.buf.format)
 			keymap("n", "<leader>rn", vim.lsp.buf.rename)
 		end
@@ -113,14 +114,14 @@ return {
 		local shfmt = require("efmls-configs.formatters.shfmt")
 		local hadolint = require("efmls-configs.linters.hadolint")
 		local sql_formatter = require("efmls-configs.formatters.sql-formatter")
-		local clang_format = require("efmls-configs.formatters.clang_format")
-		local fs = require("efmls-configs.fs")
-		clang_format["formatCommand"] =
-			string.format("%s --style=\"{BasedOnStyle: Google, IndentWidth: 4}\" '${INPUT}'", fs.executable("clang-format"))
+		-- local clang_format = require("efmls-configs.formatters.clang_format")
+		-- local fs = require("efmls-configs.fs")
+		-- clang_format["formatCommand"] =
+		-- 	string.format("%s --style=\"{BasedOnStyle: Google, IndentWidth: 4}\" '${INPUT}'", fs.executable("clang-format"))
 
 		local languages = {
-			c = { clang_format },
-			cpp = { clang_format },
+			-- c = { clang_format },
+			-- cpp = { clang_format },
 			lua = { stylua },
 			json = { eslint, fixjson },
 			jsonc = { eslint, fixjson },

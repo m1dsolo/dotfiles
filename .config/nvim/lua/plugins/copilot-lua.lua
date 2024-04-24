@@ -5,7 +5,7 @@ return {
 		suggestion = { enable = false },
 		panel = { enable = false },
 		filetypes = {
-			markdown = true,
+            ["*"] = true,
 		},
 	},
 	-- keys = {

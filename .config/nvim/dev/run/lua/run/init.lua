@@ -12,10 +12,10 @@ function M.setup(opts)
 		vim.cmd("w")
 		if ft == "cpp" then
 			split()
-			vim.cmd("term clang++ -Wall -g -std=c++17 % -o %< && ./%< < ~/.cache/data && rm %<")
+			vim.cmd("term clang++ -Wall -g -std=c++20 % -o %< && ./%< < ~/.cache/data && rm %<")
 		elseif ft == "c" then
 			split()
-			vim.cmd("term clang -Wall -g -std=c17 % -o %< && ./%< && rm %<")
+			vim.cmd("term clang -Wall -g -std=c20 % -o %< && ./%< && rm %<")
 		elseif ft == "python" then
 			split()
 			vim.cmd("term python %")

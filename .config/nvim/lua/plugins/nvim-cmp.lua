@@ -52,9 +52,10 @@ return {
 			}),
 			-- sources for autocompletion
 			sources = cmp.config.sources({
+				{ name = "path" },
+			}, {
 				{ name = "luasnip" },
 				{ name = "copilot", keyword_length = 0 },
-				{ name = "path" },
 				{ name = "nvim_lsp" },
 				{
 					name = "buffer",
