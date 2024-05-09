@@ -7,6 +7,8 @@ return {
 			-- cpp
 			"clangd",
 			"clang-format",
+            -- go
+            "gopls",
 			-- python
 			"pyright",
 			-- lua

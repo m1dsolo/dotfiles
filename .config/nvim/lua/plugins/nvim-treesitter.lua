@@ -11,9 +11,10 @@ return {
                 enable = true,
             },
             ensure_installed = {
-                "python",
                 "cpp",
                 "c",
+                "go",
+                "python",
                 "lua",
                 "sql",
                 "vim",
@@ -32,5 +33,6 @@ return {
                 additional_vim_regex_highlighting = true,
             }
         })
+        vim.g.markdown_folding = true
     end
 }

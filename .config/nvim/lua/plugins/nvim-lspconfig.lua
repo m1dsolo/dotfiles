@@ -9,23 +9,23 @@ return {
 		local function keymap(m, k, v)
 			vim.keymap.set(m, k, v, { noremap = true, silent = true })
 		end
-		keymap("n", "<leader>gf", vim.diagnostic.open_float)
-		keymap("n", "<leader>gN", vim.diagnostic.goto_prev)
-		keymap("n", "<leader>gn", vim.diagnostic.goto_next)
-		keymap("n", "<leader>gl", vim.diagnostic.setloclist)
+		keymap("n", "gF", vim.diagnostic.open_float)
+		keymap("n", "gn", vim.diagnostic.goto_next)
+		keymap("n", "gN", vim.diagnostic.goto_prev)
+		keymap("n", "gl", vim.diagnostic.setloclist)
 
 		local function on_attach(client, bufnr)
 			local function keymap(m, k, v)
 				vim.keymap.set(m, k, v, { noremap = true, silent = true, buffer = bufnr })
 			end
-			keymap("n", "<leader>gD", vim.lsp.buf.declaration)
-			keymap("n", "<leader>gd", vim.lsp.buf.definition)
-			keymap("n", "<leader>gh", vim.lsp.buf.hover)
-			keymap("n", "<leader>gi", vim.lsp.buf.implementation)
-			keymap("n", "<leader>gr", vim.lsp.buf.references)
-			keymap("n", "<leader>gt", vim.lsp.buf.type_definition)
-			keymap("n", "<leader>gs", vim.lsp.buf.signature_help)
-			keymap("n", "<leader>gc", vim.lsp.buf.code_action)
+			keymap("n", "gD", vim.lsp.buf.declaration)
+			keymap("n", "gd", vim.lsp.buf.definition)
+			keymap("n", "gh", vim.lsp.buf.hover)
+			keymap("n", "gi", vim.lsp.buf.implementation)
+			keymap("n", "gr", vim.lsp.buf.references)
+			keymap("n", "gt", vim.lsp.buf.type_definition)
+			keymap("n", "gs", vim.lsp.buf.signature_help)
+			keymap("n", "gc", vim.lsp.buf.code_action)
 			-- keymap("n", "<leader>ff", vim.lsp.buf.format)
 			keymap("n", "<leader>rn", vim.lsp.buf.rename)
 		end
@@ -97,6 +97,12 @@ return {
 				"clangd",
 				"--offset-encoding=utf-16",
 			},
+		})
+
+		-- go
+		lspconfig.gopls.setup({
+			capabilities = capabilities,
+			on_attach = on_attach,
 		})
 
 		-- sql
