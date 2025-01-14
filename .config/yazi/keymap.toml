@@ -1,0 +1,30 @@
+# See more in https://github.com/sxyazi/yazi/blob/shipped/yazi-config/preset/keymap-default.toml
+
+[manager]
+
+prepend_keymap = [
+  # navigation
+  { on = "l", run = "plugin smart-enter", desc = "Enter the child directory, or open the file" },
+  { on = "J", run = "arrow 5", desc = "Move cursor down 5 rows" },
+  { on = "K", run = "arrow -5", desc = "Move cursor up 5 rows" },
+  { on = "<C-o>", run = "back", desc = "Go back to the previous directory" },
+  # { on = "<C-i>", run = "forward", desc = "Go forward to the next directory" },  # terminal confuse with <C-i> and <TAB>
+
+  # cd
+  { on = [
+    "g",
+    "D",
+  ], run = "cd ~/Documents", desc = "Cd to ~/Documents" },
+  { on = [
+    "g",
+    "l",
+  ], run = "cd ~/.local", desc = "Cd to ~/.local" },
+  { on = [
+    "g",
+    "/",
+  ], run = "cd /", desc = "Cd to /" },
+
+  # shell
+  { on = "<C-g>", run = "shell --confirm --block lazygit", desc = "Lazygit" },
+  { on = "<C-s>", run = 'shell "$SHELL" --confirm --block', desc = "Shell" },
+]
