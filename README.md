@@ -14,8 +14,7 @@ This repository is where I store my personal dotfiles, maybe you can find some *
 
 Add image support to neovim.
 ```bash
-sudo pacman -S imagemagick luarocks lua51
-yay -S ueberzugpp
+sudo pacman -S imagemagick luarocks lua51 ueberzugpp
 luarocks --local --lua-version=5.1 install magick
 ```
 ### tmux
@@ -23,6 +22,16 @@ luarocks --local --lua-version=5.1 install magick
 tmux source ~/.config/tmux/tmux.conf
 ```
 then run tmux and press `<A-s>` + `I` to install tmux plugins.
+
+### yazi
+
+`yazi` is a blazing fast terminal file manager.
+
+For installation details, please refer to [github](https://yazi-rs.github.io/docs/installation/#arch).
+
+```bash
+sudo pacman -S yazi ffmpeg p7zip jq poppler fd ripgrep fzf zoxide imagemagick ueberzugpp
+```
 
 ## features
 
