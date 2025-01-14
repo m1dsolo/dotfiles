@@ -7,8 +7,8 @@ return {
 			-- cpp
 			"clangd",
 			"clang-format",
-            -- go
-            "gopls",
+			-- go
+			"gopls",
 			-- python
 			"pyright",
 			-- lua
@@ -17,9 +17,16 @@ return {
 			-- sql
 			"sqls",
 			"sql-formatter",
-			-- other
+			-- c#
+			"csharp-language-server",
+			-- bash
 			"bash-language-server",
+			-- json
 			"json-lsp",
+			-- toml
+			"taplo",
+			-- latex
+			"texlab",
 		},
 		auto_update = true,
 		run_on_start = true,

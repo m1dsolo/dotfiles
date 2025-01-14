@@ -16,10 +16,15 @@ return {
 		sections = {
 			lualine_b = {
 				{
+					"filename",
+					path = 3,
+				},
+				{
 					"macro-recording",
 					fmt = show_macro_recording,
 				},
 			},
+			lualine_c = {},
 		},
 	},
 }

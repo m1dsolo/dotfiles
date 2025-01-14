@@ -99,6 +99,12 @@ return {
 			},
 		})
 
+		-- C#
+		lspconfig.csharp_ls.setup({
+			capabilities = capabilities,
+			on_attach = on_attach,
+		})
+
 		-- go
 		lspconfig.gopls.setup({
 			capabilities = capabilities,
@@ -107,6 +113,12 @@ return {
 
 		-- sql
 		lspconfig.sqls.setup({
+			capabilities = capabilities,
+			on_attach = on_attach,
+		})
+
+		-- toml
+		lspconfig.taplo.setup({
 			capabilities = capabilities,
 			on_attach = on_attach,
 		})
@@ -120,6 +132,7 @@ return {
 		local shfmt = require("efmls-configs.formatters.shfmt")
 		local hadolint = require("efmls-configs.linters.hadolint")
 		local sql_formatter = require("efmls-configs.formatters.sql-formatter")
+        local taplo = require("efmls-configs.formatters.taplo")
 		-- local clang_format = require("efmls-configs.formatters.clang_format")
 		-- local fs = require("efmls-configs.fs")
 		-- clang_format["formatCommand"] =
@@ -135,6 +148,7 @@ return {
 			markdown = { prettier_d },
 			docker = { hadolint, prettier_d },
 			sql = { sql_formatter },
+            toml = { taplo },
 		}
 
 		lspconfig.efm.setup({

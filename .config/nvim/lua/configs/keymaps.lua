@@ -42,18 +42,25 @@ vim.api.nvim_create_autocmd({ "TermEnter" }, { -- quit terminal mode
 	callback = function()
 		local filetype = vim.bo.filetype
 		if filetype == "" then
-            keymap("t", "<C-h>", [[<Cmd>wincmd h<CR>]])
-            keymap("t", "<C-j>", [[<Cmd>wincmd j<CR>]])
-            keymap("t", "<C-k>", [[<Cmd>wincmd k<CR>]])
-            keymap("t", "<C-l>", [[<Cmd>wincmd l<CR>]])
+			keymap("t", "<C-h>", [[<Cmd>wincmd h<CR>]])
+			keymap("t", "<C-j>", [[<Cmd>wincmd j<CR>]])
+			keymap("t", "<C-k>", [[<Cmd>wincmd k<CR>]])
+			keymap("t", "<C-l>", [[<Cmd>wincmd l<CR>]])
 			keymap("t", "<Esc>", "<C-\\><C-n>")
 		else
-            keymap("t", "<C-h>", "<C-h>")
-            keymap("t", "<C-j>", "<C-j>")
-            keymap("t", "<C-k>", "<C-k>")
-            keymap("t", "<C-l>", "<C-l>")
+			keymap("t", "<C-h>", "<C-h>")
+			keymap("t", "<C-j>", "<C-j>")
+			keymap("t", "<C-k>", "<C-k>")
+			keymap("t", "<C-l>", "<C-l>")
 			keymap("t", "<Esc>", "<Esc>")
 		end
 	end,
 })
 keymap("n", "Q", ":wqa<CR>")
+
+-- open pdf
+keymap("n", "gz", function()
+	local pdf_path = vim.fn.expand("<cfile>")
+	vim.fn.system("zathura " .. pdf_path .. " &")
+end)
+

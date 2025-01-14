@@ -26,6 +26,8 @@ return {
                 "json",
                 "dockerfile",
                 "diff",
+                "toml",
+                "latex",
             },
             auto_install = true,
             highlight = {

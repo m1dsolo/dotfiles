@@ -21,32 +21,30 @@ return {
 	config = function()
 		local dap, dapui = require("dap"), require("dapui")
 		keymap("n", "<leader>dd", dapui.toggle)
-		keymap("n", "<leader>db", dap.toggle_breakpoint)
+		keymap("n", "<leader>b", dap.toggle_breakpoint)
 		keymap("n", "<leader>dc", dap.continue)
-		keymap("n", "<leader>ds", dap.step_over)
-		keymap("n", "<leader>di", dap.step_into)
-		keymap("n", "<leader>do", dap.step_out)
-		keymap("n", "<leader>dr", dap.repl.toggle)
+		keymap("n", "<leader>n", dap.step_over)
+		keymap("n", "<leader>s", dap.step_into)
+		keymap("n", "<leader>o", dap.step_out)
+		keymap("n", "<leader>r", dap.run_to_cursor)
 
-		dapui.setup()
-
-		-- dap.adapters.gdb = {
-		-- 	type = "executable",
-		-- 	command = "lldb",
-		-- 	name = "lldb",
-		-- }
-		-- dap.configurations.c = {
-		-- 	{
-		-- 		name = "Launch",
-		-- 		type = "lldb",
-		-- 		request = "launch",
-		-- 		program = function()
-		-- 			return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
-		-- 		end,
-		-- 		cwd = "${workspaceFolder}",
-		-- 		stopAtBeginningOfMainSubprogram = false,
-		-- 	},
-		-- }
+		dap.adapters.gdb = {
+			type = "executable",
+			command = "gdb",
+			args = { "-i", "dap" },
+		}
+		dap.configurations.cpp = {
+			{
+				name = "gdb",
+				type = "gdb",
+				request = "launch",
+				program = function()
+					return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
+				end,
+				cwd = "${workspaceFolder}",
+				stopAtBeginningOfMainSubprogram = true,
+			},
+		}
 		-- dap.configurations.cpp = dap.configurations.c
 
 		-- auto open and close windows
@@ -62,5 +60,7 @@ return {
 		dap.listeners.before.event_exited.dapui_config = function()
 			dapui.close()
 		end
+
+		dapui.setup()
 	end,
 }
