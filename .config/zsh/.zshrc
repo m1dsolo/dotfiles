@@ -7,9 +7,7 @@ source "$ZSH_DIR/vi-mode.zsh"
 source "$ZSH_DIR/function.zsh"
 source "$ZSH_DIR/alias.zsh"
 source "$ZSH_DIR/extract.zsh"
-
-# for github
-setproxy
+source "$ZSH_DIR/conda.zsh"
 
 # zap
 local ZAP_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/zap"
