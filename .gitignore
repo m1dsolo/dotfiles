@@ -5,4 +5,4 @@ init.sh
 snippets
 *.o
 *.diff
-.local/src/dwm
+.local/src/dwm/dwm

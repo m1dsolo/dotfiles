@@ -4,9 +4,12 @@
 
 /* appearance */
 static const unsigned int borderpx  = 3;        /* border pixel of windows */
+static const unsigned int gappx     = 5;        /* gaps between windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
+static const int vertpad            = 5;       /* vertical padding of bar */
+static const int sidepad            = 5;       /* horizontal padding of bar */
 static const char *fonts[]          = { "monospace:size=10" };
 static const char dmenufont[]       = "monospace:size=10";
 static const char normfgcolor[] = "#434C5E";
@@ -96,6 +99,8 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
+	{ MODKEY|ShiftMask,             XK_a,      setgaps,        {.i = -1 } },
+	{ MODKEY,                       XK_a,      setgaps,        {.i = +1 } },
     { 0,                            XK_Print,  spawn,          SHCMD("maim pic-full-$(date '+%y%m%d-%H%M-%S').png") },
     { ShiftMask,                    XK_Print,  spawn,          SHCMD("maimpick") },
     { MODKEY,                       XK_Print,  spawn,          SHCMD("dmenurecord")},
