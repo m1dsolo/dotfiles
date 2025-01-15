@@ -3,3 +3,6 @@ lazy-lock.json
 init.sh
 .gitattributes
 snippets
+*.o
+*.diff
+.local/src/dwm
