@@ -33,6 +33,13 @@ For installation details, please refer to [github](https://yazi-rs.github.io/doc
 sudo pacman -S yazi ffmpeg p7zip jq poppler fd ripgrep fzf zoxide imagemagick ueberzugpp
 ```
 
+### DWM
+
+```bash
+cd ./.local/src/dwm
+sudo make clean install
+```
+
 ## features
 
 ### neovim
@@ -65,3 +72,14 @@ see more in [vim-dadbod-ui](https://github.com/CopilotC-Nvim/CopilotChat.nvim).
 
 see more in [obsidian.nvim](https://github.com/epwalsh/obsidian.nvim) and [image.nvim](https://github.com/3rd/image.nvim).
 
+### DWM
+
+See more in [DWM website](https://dwm.suckless.org/).
+Currently using version 6.5 with patches:
+1. [hide vacant tags](https://dwm.suckless.org/patches/hide_vacant_tags/)
+2. [actualfullscreen](https://dwm.suckless.org/patches/actualfullscreen/)
+3. [scratchpads](https://dwm.suckless.org/patches/scratchpads/)
+4. [fullgaps](https://dwm.suckless.org/patches/fullgaps/)
+5. [barpadding](https://dwm.suckless.org/patches/barpadding/)
+6. [alpha.fixboarders](https://dwm.suckless.org/patches/alpha/)
+7. [swallow](https://dwm.suckless.org/patches/swallow/)

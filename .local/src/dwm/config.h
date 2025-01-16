@@ -1,17 +1,23 @@
 /* See LICENSE file for copyright and license details. */
 
 #define TERMINAL "st"
+#define TERMCLASS "St"
 
 /* appearance */
 static const unsigned int borderpx  = 3;        /* border pixel of windows */
 static const unsigned int gappx     = 5;        /* gaps between windows */
 static const unsigned int snap      = 32;       /* snap pixel */
+static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const int vertpad            = 6;       /* vertical padding of bar */
 static const int sidepad            = 6;       /* horizontal padding of bar */
-static const char *fonts[]          = { "Source Code Pro:size=12:antialias=true:autohint=true" };
-static const char dmenufont[]       = "monospace:size=10";
+static const char *fonts[]          = {
+    "Source Code Pro:size=16:antialias=true:autohint=true"
+    "SauceCodeProNerdFontMono:pixelsize=16:antialias=true:autohint=true",
+    "SourceHanSansCN:pixelsize=16:antialias=true:autohint=true",
+};
+static const char dmenufont[]       = "Source Code Pro:size=12:antialias=true:autohint=true";
 static const char normfgcolor[] = "#434C5E";
 static const char normbgcolor[] = "#FFD6E1";
 static const char normbordercolor[] = "#FFD6E1";
@@ -44,10 +50,11 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class      instance    title       tags mask     isfloating   monitor */
-	// { "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
-	{ NULL,		  "spterm",		NULL,		SPTAG(0),		1,			 -1 },
-	{ NULL,		  "spnote",		NULL,		SPTAG(1),		1,			 -1 },
+	/* class      instance    title       tags mask     isfloating   isterminal   noswallow   monitor */
+	// { "Firefox",  NULL,         NULL,       1 << 8,         0,            0,          -1,        -1 },
+    { TERMCLASS,  NULL,         NULL,       0,              0,            1,           0,        -1},
+	{ NULL,		  "spterm",		NULL,		SPTAG(0),		1,			  1,           0,        -1 },
+	{ NULL,		  "spnote",		NULL,		SPTAG(1),		1,			  1,           0,        -1 },
 };
 
 /* layout(s) */
