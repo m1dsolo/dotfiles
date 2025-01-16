@@ -8,9 +8,9 @@ static const unsigned int gappx     = 5;        /* gaps between windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const int vertpad            = 5;       /* vertical padding of bar */
-static const int sidepad            = 5;       /* horizontal padding of bar */
-static const char *fonts[]          = { "monospace:size=10" };
+static const int vertpad            = 6;       /* vertical padding of bar */
+static const int sidepad            = 6;       /* horizontal padding of bar */
+static const char *fonts[]          = { "Source Code Pro:size=12:antialias=true:autohint=true" };
 static const char dmenufont[]       = "monospace:size=10";
 static const char normfgcolor[] = "#434C5E";
 static const char normbgcolor[] = "#FFD6E1";
@@ -28,8 +28,8 @@ typedef struct {
 	const char *name;
 	const void *cmd;
 } Sp;
-const char *spcmd1[] = {TERMINAL, "-n", "spterm", "-g", "120x34", NULL};
-const char *spcmd2[] = {TERMINAL, "-n", "spnote", "-g", "120x34", "-e", "/bin/zsh", "-c", "nvim ~/vault", NULL};
+const char *spcmd1[] = {TERMINAL, "-n", "spterm", NULL};
+const char *spcmd2[] = {TERMINAL, "-n", "spnote", "-e", "/bin/zsh", "-c", "nvim ~/vault", NULL};
 static Sp scratchpads[] = {
 	/* name          cmd  */
 	{"spterm",      spcmd1},
