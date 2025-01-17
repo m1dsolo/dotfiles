@@ -7,11 +7,12 @@ stty stop undef  # Disable ctrl-s to freeze terminal.
 setopt interactive_comments
 setopt PROMPT_SP  # printf("hello") will print hello%
 
-
 # history
 HISTSIZE=10000000
 SAVEHIST=10000000
 HISTFILE=~/.cache/zsh/history
+setopt incappendhistory
+setopt share_history
 
 # Basic auto/tab complete:
 autoload -U compinit
