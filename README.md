@@ -83,3 +83,4 @@ Currently using version 6.5 with patches:
 5. [barpadding](https://dwm.suckless.org/patches/barpadding/)
 6. [alpha.fixboarders](https://dwm.suckless.org/patches/alpha/)
 7. [swallow](https://dwm.suckless.org/patches/swallow/)
+8. [statuscmd](https://dwm.suckless.org/patches/statuscmd/)

@@ -13,17 +13,17 @@ static const int topbar             = 1;        /* 0 means bottom bar */
 static const int vertpad            = 6;       /* vertical padding of bar */
 static const int sidepad            = 6;       /* horizontal padding of bar */
 static const char *fonts[]          = {
-    "Source Code Pro:size=16:antialias=true:autohint=true"
+    "Source Code Pro:pixelsize=16:antialias=true:autohint=true"
     "SauceCodeProNerdFontMono:pixelsize=16:antialias=true:autohint=true",
     "SourceHanSansCN:pixelsize=16:antialias=true:autohint=true",
 };
-static const char dmenufont[]       = "Source Code Pro:size=12:antialias=true:autohint=true";
-static const char normfgcolor[] = "#434C5E";
-static const char normbgcolor[] = "#FFD6E1";
+static const char dmenufont[]       = "Source Code Pro:pixelsize=16:antialias=true:autohint=true";
+static const char normfgcolor[]     = "#434C5E";
+static const char normbgcolor[]     = "#FFD6E1";
 static const char normbordercolor[] = "#FFD6E1";
-static const char selfgcolor[] = "#434C5E";
-static const char selbgcolor[] = "#FFB6C1";
-static const char selbordercolor[] = "#FF7681";
+static const char selfgcolor[]      = "#434C5E";
+static const char selbgcolor[]      = "#FFB6C1";
+static const char selbordercolor[]  = "#FF7681";
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { normfgcolor, normbgcolor, normbordercolor },
@@ -79,10 +79,14 @@ static const Layout layouts[] = {
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
+#define STATUSBAR "dwmblocks"
+
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
 static const char *termcmd[]  = { "st", NULL };
+
+#include <X11/XF86keysym.h>
 
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -99,7 +103,7 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_space,  zoom,           {0} },
 	{ MODKEY,                       XK_Tab,    view,           {0} },
 	{ MODKEY,                       XK_q,      killclient,     {0} },
-	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
+	{ MODKEY|ShiftMask,             XK_f,  togglefloating, {0} },
 	// { MODKEY,                       XK_0,      view,           {.ui = ~0 } },
 	// { MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
 	{ MODKEY,                       XK_comma,  focusmon,       {.i = -1 } },
@@ -110,12 +114,14 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_a,      setgaps,        {.i = +1 } },
     { 0,                            XK_Print,  spawn,          SHCMD("maim pic-full-$(date '+%y%m%d-%H%M-%S').png") },
     { ShiftMask,                    XK_Print,  spawn,          SHCMD("maimpick") },
-    { MODKEY,                       XK_Print,  spawn,          SHCMD("dmenurecord")},
-    { MODKEY,                       XK_Delete, spawn,          SHCMD("dmenurecord kill")},
+    { MODKEY,                       XK_Print,  spawn,          SHCMD("dmenurecord") },
+    { MODKEY,                       XK_Delete, spawn,          SHCMD("dmenurecord kill") },
     { MODKEY,                       XK_minus,  spawn,          SHCMD("pamixer --allow-boost -d 5; kill -44 $(pidof dwmblocks)") },
     { MODKEY,                       XK_equal,  spawn,          SHCMD("pamixer --allow-boost -i 5; kill -44 $(pidof dwmblocks)") },
     { MODKEY,                       XK_w,      spawn,          SHCMD("$BROWSER") },
     { MODKEY|ShiftMask,             XK_w,      spawn,          SHCMD(TERMINAL " -e sudo nmtui") },
+    { MODKEY,                       XK_m,      spawn,          SHCMD(TERMINAL " -e ncmpcpp") },
+    { MODKEY|ShiftMask,             XK_m,      spawn,          SHCMD("pamixer -t; kill -44 $(pidof dwmblocks)") },
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
@@ -126,6 +132,12 @@ static const Key keys[] = {
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
+    { 0,            XF86XK_AudioMute,          spawn,          SHCMD("pamixer -t; kill -44 $(pidof dwmblocks)") },
+    { 0,            XF86XK_AudioRaiseVolume,   spawn,          SHCMD("pamixer --allow-boost -i 3; kill -44 $(pidof dwmblocks)") },
+    { 0,            XF86XK_AudioLowerVolume,   spawn,          SHCMD("pamixer --allow-boost -d 3; kill -44 $(pidof dwmblocks)") },
+    { 0,            XF86XK_AudioPrev,          spawn,          SHCMD("mpc prev") },
+    { 0,            XF86XK_AudioNext,          spawn,          SHCMD("mpc next") },
+    { 0,            XF86XK_AudioPause,         spawn,          SHCMD("mpc pause") },
 };
 
 /* button definitions */
@@ -134,8 +146,9 @@ static const Button buttons[] = {
 	/* click                event mask      button          function        argument */
 	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
 	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
-	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
-	{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
+	{ ClkStatusText,        0,              Button1,        sigstatusbar,   {.i = 1} },
+	{ ClkStatusText,        0,              Button2,        sigstatusbar,   {.i = 2} },
+	{ ClkStatusText,        0,              Button3,        sigstatusbar,   {.i = 3} },
 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
 	{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
 	{ ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },
