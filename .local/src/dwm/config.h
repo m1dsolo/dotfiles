@@ -1,7 +1,6 @@
 /* See LICENSE file for copyright and license details. */
 
 #define TERMINAL "st"
-#define TERMCLASS "St"
 
 /* appearance */
 static const unsigned int borderpx  = 3;        /* border pixel of windows */
@@ -52,7 +51,7 @@ static const Rule rules[] = {
 	 */
 	/* class      instance    title       tags mask     isfloating   isterminal   noswallow   monitor */
 	// { "Firefox",  NULL,         NULL,       1 << 8,         0,            0,          -1,        -1 },
-    { TERMCLASS,  NULL,         NULL,       0,              0,            1,           0,        -1},
+    { TERMINAL,  NULL,         NULL,       0,              0,            1,           0,        -1},
 	{ NULL,		  "spterm",		NULL,		SPTAG(0),		1,			  1,           0,        -1 },
 	{ NULL,		  "spnote",		NULL,		SPTAG(1),		1,			  1,           0,        -1 },
 };
