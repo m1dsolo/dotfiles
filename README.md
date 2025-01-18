@@ -74,6 +74,7 @@ see more in [obsidian.nvim](https://github.com/epwalsh/obsidian.nvim) and [image
 
 ### dwm
 
+See more in [dwm website](https://dwm.suckless.org/).
 Currently using version 6.5 with patches:
 1. [hide vacant tags](https://dwm.suckless.org/patches/hide_vacant_tags/)
 2. [actualfullscreen](https://dwm.suckless.org/patches/actualfullscreen/)
@@ -96,3 +97,10 @@ Currently using version 0.9.2 with patches:
 6. [scrollback-mouse-altscreen](https://st.suckless.org/patches/scrollback/)
 7. [gruvbox-dark](https://st.suckless.org/patches/gruvbox/)
 
+### dmenu
+
+See more in [dmenu website](https://tools.suckless.org/dmenu/).
+Currently using version 5.3 with patches:
+1. [center](https://tools.suckless.org/dmenu/patches/center/)
+2. [border](https://tools.suckless.org/dmenu/patches/border/)
+3. [border-color](https://tools.suckless.org/dmenu/patches/border/)
