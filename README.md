@@ -72,9 +72,8 @@ see more in [vim-dadbod-ui](https://github.com/CopilotC-Nvim/CopilotChat.nvim).
 
 see more in [obsidian.nvim](https://github.com/epwalsh/obsidian.nvim) and [image.nvim](https://github.com/3rd/image.nvim).
 
-### DWM
+### dwm
 
-See more in [DWM website](https://dwm.suckless.org/).
 Currently using version 6.5 with patches:
 1. [hide vacant tags](https://dwm.suckless.org/patches/hide_vacant_tags/)
 2. [actualfullscreen](https://dwm.suckless.org/patches/actualfullscreen/)
@@ -84,3 +83,16 @@ Currently using version 6.5 with patches:
 6. [alpha.fixboarders](https://dwm.suckless.org/patches/alpha/)
 7. [swallow](https://dwm.suckless.org/patches/swallow/)
 8. [statuscmd](https://dwm.suckless.org/patches/statuscmd/)
+
+### st
+
+See more in [st website](https://st.suckless.org/).
+Currently using version 0.9.2 with patches:
+1. [alpha](https://st.suckless.org/patches/alpha/)
+2. [boxdraw](https://st.suckless.org/patches/boxdraw/)
+3. [ligatures](https://st.suckless.org/patches/ligatures/)
+4. [font2](https://st.suckless.org/patches/font2/)
+5. [scrollback-ringbuffer](https://st.suckless.org/patches/scrollback/)
+6. [scrollback-mouse-altscreen](https://st.suckless.org/patches/scrollback/)
+7. [gruvbox-dark](https://st.suckless.org/patches/gruvbox/)
+
