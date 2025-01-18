@@ -418,7 +418,7 @@ keypress(XKeyEvent *ev)
 		default:
 			return;
 		}
-	}
+    }
 
 	switch(ksym) {
 	default:
@@ -477,6 +477,7 @@ insert:
 		/* fallthrough */
 	case XK_Up:
 	case XK_KP_Up:
+    case XK_ISO_Left_Tab:
 		if (sel && sel->left && (sel = sel->left)->right == curr) {
 			curr = prev;
 			calcoffsets();
@@ -514,21 +515,13 @@ insert:
 		}
 		if (lines > 0)
 			return;
-		/* fallthrough */
 	case XK_Down:
 	case XK_KP_Down:
+	case XK_Tab:
 		if (sel && sel->right && (sel = sel->right) == next) {
 			curr = next;
 			calcoffsets();
 		}
-		break;
-	case XK_Tab:
-		if (!sel)
-			return;
-		cursor = strnlen(sel->text, sizeof text - 1);
-		memcpy(text, sel->text, cursor);
-		text[cursor] = '\0';
-		match();
 		break;
 	}
 
