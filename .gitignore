@@ -8,3 +8,4 @@ snippets
 .local/src/dwm/dwm
 .local/src/dwmblocks/dwmblocks
 .local/src/st/st
+.local/src/dmenu/dmenu
