@@ -40,6 +40,12 @@ cd ./.local/src/dwm
 sudo make clean install
 ```
 
+### picom
+
+```bash
+sudo pacman -S picom
+```
+
 ## features
 
 ### neovim
@@ -107,6 +113,10 @@ Currently using version 5.3 with patches:
 
 ### dwmblocks
 
-See more in [dwmblocks](https://github.com/torrinfail/dwmblocks).
+See more in [github](https://github.com/torrinfail/dwmblocks).
 Add patches:
 1. [statuscmd](https://dwm.suckless.org/patches/statuscmd/dwmblocks-statuscmd-20210402-96cbb45.diff): for clickable
+
+### picom
+
+See more in [github](https://github.com/yshui/picom) and [archwiki](https://wiki.archlinux.org/title/Picom).
