@@ -1,0 +1,9 @@
+#!/bin/sh
+
+pic_name=pic-full-$(date '+%y%m%d-%H%M-%S').png
+if [ -d ~/Pictures ]; then
+    pic_name=~/Pictures/$pic_name
+fi
+
+maim $pic_name
+notify-send "Screenshot saved as:" $pic_name

@@ -25,7 +25,7 @@ elif [ "$vol" -gt "30" ]; then
 elif [ "$vol" -gt "0" ]; then
 	icon="🔈"
 else
-        echo 🔇 && exit
+    echo 🔇 && exit
 fi
 
 echo "$icon$vol%"

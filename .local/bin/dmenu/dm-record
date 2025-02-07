@@ -1,0 +1,164 @@
+#!/bin/sh
+
+updateicon() {
+	echo "$1" > "/tmp/recordingicon"
+	pkill -RTMIN+1 "dwmblocks"
+}
+
+killrecording() {
+	recpid="$(cat /tmp/recordingpid)"
+	# kill with SIGTERM, allowing finishing touches.
+	kill -15 "$recpid"
+	rm -f /tmp/recordingpid
+	updateicon ""
+	pkill -RTMIN+1 "dwmblocks"
+
+    target_name="$(cat /tmp/record_target_name)"
+    if [ -n "$target_name" ]; then
+        notify-send "Recording saved as:" "$target_name"
+    fi
+
+	# even after SIGTERM, ffmpeg may still run, so SIGKILL it.
+	sleep 3
+	kill -9 "$recpid"
+
+	exit
+}
+
+asktoend() {
+	response="$(printf "No\\nYes" | dmenu -i -p "Recording still active. End recording?")" &&
+	[ "$response" = "Yes" ] && killrecording
+}
+
+askrecording() {
+    choices=(
+        "screencast"
+        "screencast selected"
+        "video"
+        "video selected"
+        "audio"
+        "webcam"
+        "webcam (hi-def)"
+    )
+
+    choice="$(printf "%s\n" "${choices[@]}" | dmenu -c -i -l ${#choices[@]} -p "Record:")"
+    timestamp="$(date '+%y%m%d-%H%M-%S')"
+    case $choice in
+        "${choices[0]}") {
+            target_path="$([ -d "$HOME/Videos" ] && echo "$HOME/Videos" || echo "$HOME")"
+            target_name="$target_path/screencast-$timestamp.mp4"
+            echo "$target_name" > /tmp/record_target_name
+
+            ffmpeg -y \
+            -f x11grab \
+            -framerate 60 \
+            -s "$(xdpyinfo | awk '/dimensions/ {print $2;}')" \
+            -i "$DISPLAY" \
+            -f alsa -i hw:0 \
+            -r 60 \
+            -c:v h264 -crf 0 -preset ultrafast -c:a aac \
+            "$target_name" &
+            echo $! > /tmp/recordingpid
+            updateicon "🎥"
+        };;
+        "${choices[1]}") {
+            target_path="$([ -d "$HOME/Videos" ] && echo "$HOME/Videos" || echo "$HOME")"
+            target_name="$target_path/screencast-selected-$timestamp.mp4"
+            echo "$target_name" > /tmp/record_target_name
+
+            slop -f "%x %y %w %h" > /tmp/slop
+            read -r X Y W H < /tmp/slop
+            rm /tmp/slop
+
+            ffmpeg -y \
+            -f x11grab \
+            -framerate 60 \
+            -video_size "$W"x"$H" \
+            -i :0.0+"$X,$Y" \
+            -f alsa -i hw:0 \
+            -r 60 \
+            -c:v h264 -crf 0 -preset ultrafast -c:a aac \
+            "$target_name" &
+            echo $! > /tmp/recordingpid
+            updateicon "🎥"
+        };;
+        "${choices[2]}") {
+            target_path="$([ -d "$HOME/Videos" ] && echo "$HOME/Videos" || echo "$HOME")"
+            target_name="$target_path/video-$timestamp.mkv"
+            echo "$target_name" > /tmp/record_target_name
+
+            ffmpeg \
+            -f x11grab \
+            -s "$(xdpyinfo | awk '/dimensions/ {print $2;}')" \
+            -i "$DISPLAY" \
+            -c:v libx264 -qp 0 -r 30 \
+            "$target_name" &
+            echo $! > /tmp/recordingpid
+            updateicon "🎥"
+        };;
+        "${choices[3]}") {
+            target_path="$([ -d "$HOME/Videos" ] && echo "$HOME/Videos" || echo "$HOME")"
+            target_name="$target_path/video-selected-$timestamp.mkv"
+            echo "$target_name" > /tmp/record_target_name
+
+            slop -f "%x %y %w %h" > /tmp/slop
+            read -r X Y W H < /tmp/slop
+            rm /tmp/slop
+
+            ffmpeg \
+            -f x11grab \
+            -framerate 60 \
+            -video_size "$W"x"$H" \
+            -i :0.0+"$X,$Y" \
+            -c:v libx264 -qp 0 -r 30 \
+            "$target_name" &
+            echo $! > /tmp/recordingpid
+            updateicon "🎥"
+        };;
+        "${choices[4]}") {
+            target_path="$([ -d "$HOME/Audios" ] && echo "$HOME/Audios" || echo "$HOME")"
+            target_name="$target_path/audio-$timestamp.flac"
+            echo "$target_name" > /tmp/record_target_name
+
+            ffmpeg \
+            -f alsa -i default \
+            -c:a flac \
+            "$target_name" &
+            echo $! > /tmp/recordingpid
+            updateicon "🎥"
+        };;
+        "${choices[5]}") {
+            target_path="$([ -d "$HOME/Videos" ] && echo "$HOME/Videos" || echo "$HOME")"
+            target_name="$target_path/webcam-$timestamp.mkv"
+            echo "$target_name" > /tmp/record_target_name
+
+            ffmpeg \
+            -f v4l2 \
+            -i /dev/video0 \
+            -video_size 640x480 \
+            "$target_name" &
+            echo $! > /tmp/recordingpid
+            updateicon "🎥"
+        };;
+        "${choices[6]}") {
+            target_path="$([ -d "$HOME/Videos" ] && echo "$HOME/Videos" || echo "$HOME")"
+            target_name="$target_path/webcam(hi-def)-$timestamp.mkv"
+            echo "$target_name" > /tmp/record_target_name
+
+            ffmpeg \
+            -f v4l2 \
+            -i /dev/video0 \
+            -video_size 1920x1080 \
+            "$target_name" &
+            echo $! > /tmp/recordingpid
+            updateicon "🎥"
+        };;
+    esac
+}
+
+if [ "$1" = "kill" ]; then
+    [ -f /tmp/recordingpid ] && killrecording
+    exit
+fi
+
+[ -f /tmp/recordingpid ] && asktoend && exit || askrecording

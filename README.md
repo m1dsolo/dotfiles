@@ -104,3 +104,9 @@ Currently using version 5.3 with patches:
 1. [center](https://tools.suckless.org/dmenu/patches/center/)
 2. [border](https://tools.suckless.org/dmenu/patches/border/)
 3. [border-color](https://tools.suckless.org/dmenu/patches/border/)
+
+### dwmblocks
+
+See more in [dwmblocks](https://github.com/torrinfail/dwmblocks).
+Add patches:
+1. [statuscmd](https://dwm.suckless.org/patches/statuscmd/dwmblocks-statuscmd-20210402-96cbb45.diff): for clickable

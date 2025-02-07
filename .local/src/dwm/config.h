@@ -3,7 +3,7 @@
 #define TERMINAL "st"
 
 /* appearance */
-static const unsigned int borderpx  = 3;        /* border pixel of windows */
+static const unsigned int borderpx  = 4;        /* border pixel of windows */
 static const unsigned int gappx     = 5;        /* gaps between windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
@@ -13,7 +13,7 @@ static const int vertpad            = 6;       /* vertical padding of bar */
 static const int sidepad            = 6;       /* horizontal padding of bar */
 static const char *fonts[]          = {
     "Source Code Pro:pixelsize=16:antialias=true:autohint=true"
-    "SauceCodeProNerdFontMono:pixelsize=16:antialias=true:autohint=true",
+    "SauceCodeProNerdFont:pixelsize=16:antialias=true:autohint=true",
     "SourceHanSansCN:pixelsize=16:antialias=true:autohint=true",
 };
 static const char dmenufont[]       = "Source Code Pro:pixelsize=16:antialias=true:autohint=true";
@@ -33,8 +33,8 @@ typedef struct {
 	const char *name;
 	const void *cmd;
 } Sp;
-const char *spcmd1[] = {TERMINAL, "-n", "spterm", NULL};
-const char *spcmd2[] = {TERMINAL, "-n", "spnote", "-e", "/bin/zsh", "-c", "nvim ~/vault", NULL};
+const char *spcmd1[] = {TERMINAL, "-n", "spterm", "-g", "120x34", NULL};
+const char *spcmd2[] = {TERMINAL, "-n", "spnote", "-g", "120x34", "-e", "/bin/zsh", "-c", "nvim ~/vault", NULL};
 static Sp scratchpads[] = {
 	/* name          cmd  */
 	{"spterm",      spcmd1},
@@ -51,7 +51,7 @@ static const Rule rules[] = {
 	 */
 	/* class      instance    title       tags mask     isfloating   isterminal   noswallow   monitor */
 	// { "Firefox",  NULL,         NULL,       1 << 8,         0,            0,          -1,        -1 },
-    { TERMINAL,  NULL,         NULL,       0,              0,            1,           0,        -1},
+    { TERMINAL,   NULL,         NULL,       0,              0,            1,           0,        -1 },
 	{ NULL,		  "spterm",		NULL,		SPTAG(0),		1,			  1,           0,        -1 },
 	{ NULL,		  "spnote",		NULL,		SPTAG(1),		1,			  1,           0,        -1 },
 };
@@ -107,20 +107,21 @@ static const Key keys[] = {
 	// { MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
 	{ MODKEY,                       XK_comma,  focusmon,       {.i = -1 } },
 	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
+    { MODKEY|ShiftMask,             XK_comma,  spawn,          SHCMD("dm-monitor") },
 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_a,      setgaps,        {.i = -1 } },
 	{ MODKEY,                       XK_a,      setgaps,        {.i = +1 } },
-    { 0,                            XK_Print,  spawn,          SHCMD("maim pic-full-$(date '+%y%m%d-%H%M-%S').png") },
-    { ShiftMask,                    XK_Print,  spawn,          SHCMD("maimpick") },
-    { MODKEY,                       XK_Print,  spawn,          SHCMD("dmenurecord") },
-    { MODKEY,                       XK_Delete, spawn,          SHCMD("dmenurecord kill") },
-    { MODKEY,                       XK_minus,  spawn,          SHCMD("pamixer --allow-boost -d 5; kill -44 $(pidof dwmblocks)") },
-    { MODKEY,                       XK_equal,  spawn,          SHCMD("pamixer --allow-boost -i 5; kill -44 $(pidof dwmblocks)") },
+    { 0,                            XK_Print,  spawn,          SHCMD("screenshot") },
+    { ShiftMask,                    XK_Print,  spawn,          SHCMD("dm-screenshot") },
+    { MODKEY,                       XK_Print,  spawn,          SHCMD("dm-record") },
+    { MODKEY,                       XK_Delete, spawn,          SHCMD("dm-record kill") },
+    { MODKEY,                       XK_minus,  spawn,          SHCMD("pamixer --allow-boost -d 5; kill -41 $(pidof dwmblocks)") },
+    { MODKEY,                       XK_equal,  spawn,          SHCMD("pamixer --allow-boost -i 5; kill -41 $(pidof dwmblocks)") },
     { MODKEY,                       XK_w,      spawn,          SHCMD("$BROWSER") },
     { MODKEY|ShiftMask,             XK_w,      spawn,          SHCMD(TERMINAL " -e sudo nmtui") },
     { MODKEY,                       XK_m,      spawn,          SHCMD(TERMINAL " -e ncmpcpp") },
-    { MODKEY|ShiftMask,             XK_m,      spawn,          SHCMD("pamixer -t; kill -44 $(pidof dwmblocks)") },
+    { MODKEY|ShiftMask,             XK_m,      spawn,          SHCMD("pamixer -t; kill -41 $(pidof dwmblocks)") },
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
@@ -131,9 +132,9 @@ static const Key keys[] = {
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
-    { 0,            XF86XK_AudioMute,          spawn,          SHCMD("pamixer -t; kill -44 $(pidof dwmblocks)") },
-    { 0,            XF86XK_AudioRaiseVolume,   spawn,          SHCMD("pamixer --allow-boost -i 3; kill -44 $(pidof dwmblocks)") },
-    { 0,            XF86XK_AudioLowerVolume,   spawn,          SHCMD("pamixer --allow-boost -d 3; kill -44 $(pidof dwmblocks)") },
+    { 0,            XF86XK_AudioMute,          spawn,          SHCMD("pamixer -t; kill -41 $(pidof dwmblocks)") },
+    { 0,            XF86XK_AudioRaiseVolume,   spawn,          SHCMD("pamixer --allow-boost -i 3; kill -41 $(pidof dwmblocks)") },
+    { 0,            XF86XK_AudioLowerVolume,   spawn,          SHCMD("pamixer --allow-boost -d 3; kill -41 $(pidof dwmblocks)") },
     { 0,            XF86XK_AudioPrev,          spawn,          SHCMD("mpc prev") },
     { 0,            XF86XK_AudioNext,          spawn,          SHCMD("mpc next") },
     { 0,            XF86XK_AudioPause,         spawn,          SHCMD("mpc pause") },
