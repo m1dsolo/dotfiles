@@ -1,3 +1,6 @@
 [manager]
 
 sort_by = "natural"
+
+[open]
+prepend_rules = [{ name = "*.diff", use = "edit" }]

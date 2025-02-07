@@ -26,5 +26,14 @@ prepend_keymap = [
 
   # shell
   { on = "<C-g>", run = "shell --confirm --block lazygit", desc = "Lazygit" },
-  { on = "<C-s>", run = 'shell "$SHELL" --confirm --block', desc = "Shell" },
+
+  # Visual mode
+  { on = "V", run = "visual_mode", desc = "Enter visual mode (selection mode)" },     # I don't need unset mode
+  { on = "<C-v>", run = "visual_mode", desc = "Enter visual mode (selection mode)" }, # "<C-v>" is the same as "v"
+
+  # chmod
+  { on = [
+    "c",
+    "m",
+  ], run = "plugin chmod", desc = "Chmod on selected files" },
 ]
