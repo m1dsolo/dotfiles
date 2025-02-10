@@ -462,6 +462,8 @@ swallow(Client *p, Client *c)
 		return;
 	if (c->noswallow && !swallowfloating && c->isfloating)
 		return;
+    if (!access("/tmp/noswallow", F_OK))
+        return;
 
 	detach(c);
 	detachstack(c);
