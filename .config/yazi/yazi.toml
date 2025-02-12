@@ -3,4 +3,10 @@
 sort_by = "natural"
 
 [open]
-prepend_rules = [{ name = "*.diff", use = "edit" }]
+prepend_rules = [
+  { name = "*.diff", use = "edit" },
+  { mime = "application/*-executable", use = "execute" },
+]
+
+[opener]
+execute = [{ run = './"$(basename "$1")"', desc = "Execute", for = "linux" }]

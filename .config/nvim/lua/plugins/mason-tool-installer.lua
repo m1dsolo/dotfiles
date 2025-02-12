@@ -25,6 +25,8 @@ return {
 			"json-lsp",
 			-- toml
 			"taplo",
+			-- markdown,
+			"marksman",
 			-- latex
 			"texlab",
 		},

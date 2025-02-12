@@ -123,6 +123,12 @@ return {
 			on_attach = on_attach,
 		})
 
+		-- markdown
+		lspconfig.marksman.setup({
+			capabilities = capabilities,
+			on_attach = on_attach,
+		})
+
 		-- efm
 		local stylua = require("efmls-configs.formatters.stylua")
 		local eslint = require("efmls-configs.linters.eslint")
@@ -132,7 +138,7 @@ return {
 		local shfmt = require("efmls-configs.formatters.shfmt")
 		local hadolint = require("efmls-configs.linters.hadolint")
 		local sql_formatter = require("efmls-configs.formatters.sql-formatter")
-        local taplo = require("efmls-configs.formatters.taplo")
+		local taplo = require("efmls-configs.formatters.taplo")
 		-- local clang_format = require("efmls-configs.formatters.clang_format")
 		-- local fs = require("efmls-configs.fs")
 		-- clang_format["formatCommand"] =
@@ -148,7 +154,7 @@ return {
 			markdown = { prettier_d },
 			docker = { hadolint, prettier_d },
 			sql = { sql_formatter },
-            toml = { taplo },
+			toml = { taplo },
 		}
 
 		lspconfig.efm.setup({

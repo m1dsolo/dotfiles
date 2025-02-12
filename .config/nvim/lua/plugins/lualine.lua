@@ -12,7 +12,7 @@ return {
 	lazy = false,
 	dependencies = { "nvim-tree/nvim-web-devicons" },
 	opts = {
-		theme = "tokyonight",
+		theme = "gruvbox",
 		sections = {
 			lualine_b = {
 				{
