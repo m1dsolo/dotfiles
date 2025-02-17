@@ -1,0 +1,44 @@
+#!/bin/sh
+
+IMAGE_NAME="$1"
+SERVER_IP="m1dsolo.xyz"
+SERVER_USER="root"
+SERVER_IMAGE_DIR="${2:-/var/www/images/}"
+REMOTE_PATH="$SERVER_USER@$SERVER_IP:$SERVER_IMAGE_DIR"
+
+# check if the image name is provided
+if [ -z "$IMAGE_NAME" ]; then
+    echo "Usage: $0 <image_name>"
+    exit 1
+fi
+
+# check if the image file exists
+if [ ! -f "$IMAGE_NAME" ]; then
+    echo "Error: Image file not found: $IMAGE_NAME"
+    exit 1
+fi
+
+# check if the image name is valid
+if ! echo "$IMAGE_NAME" | grep -E -q '^[a-zA-Z0-9_\-]+\.(jpg|jpeg|png|gif)$'; then
+    echo "Error: Invalid image name: $IMAGE_NAME"
+    exit 1
+fi
+
+# TODO: compress
+
+# create remote directory if it doesn't exist
+ssh "$SERVER_USER@$SERVER_IP" "mkdir -p $SERVER_IMAGE_DIR"
+
+# upload
+echo "Uploading $IMAGE_NAME to $SERVER_USER@$SERVER_IP:$SERVER_IMAGE_DIR"
+scp "$IMAGE_NAME" "$REMOTE_PATH"
+
+if [ $? -eq 0 ]; then
+    echo "Image uploaded successfully!"
+    echo "Image URL: https://$SERVER_IP/$IMAGE_NAME"
+else
+    echo "Error: Image upload failed."
+    exit 1
+fi
+
+exit 0
