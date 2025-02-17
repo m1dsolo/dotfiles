@@ -1,19 +1,75 @@
+local keymap = require("utils").keymap
+
 return {
 	"neovim/nvim-lspconfig",
 	lazy = false,
-	config = function()
-		local lspconfig = require("lspconfig")
-		local cmp_nvim_lsp = require("cmp_nvim_lsp")
-		local capabilities = cmp_nvim_lsp.default_capabilities()
-
-		local function keymap(m, k, v)
-			vim.keymap.set(m, k, v, { noremap = true, silent = true })
-		end
-		keymap("n", "gF", vim.diagnostic.open_float)
-		keymap("n", "gn", vim.diagnostic.goto_next)
-		keymap("n", "gN", vim.diagnostic.goto_prev)
-		keymap("n", "gl", vim.diagnostic.setloclist)
-
+	opts = {
+		servers = {
+			-- C/C++
+			clangd = {
+				cmd = {
+					"clangd",
+					"--offset-encoding=utf-16",
+				},
+			},
+			-- Rust
+			rust_analyzer = {},
+			-- Go
+			gopls = {},
+			-- Python
+			pyright = {
+				settings = {
+					pyright = {
+						disableOrganizeImports = false,
+						analysis = {
+							useLibraryCodeForTypes = true,
+							autoSearchPaths = true,
+							diagnosticMode = "workspace",
+							autoImportCompletions = true,
+						},
+					},
+				},
+			},
+			-- Typescript
+			ts_ls = {},
+			-- Lua
+			lua_ls = {
+				settings = {
+					Lua = {
+						diagnostics = {
+							globals = { "vim" },
+						},
+						workspace = {
+							-- make language server aware of runtime files
+							[vim.fn.expand("$VIMRUNTIME/lua")] = true,
+							[vim.fn.stdpath("config") .. "/lua"] = true,
+						},
+						completion = { callSnippet = "Replace" },
+					},
+				},
+			},
+			-- Bash
+			bashls = {
+				filetypes = {
+					"sh",
+					"aliasrc",
+				},
+			},
+			-- Sql
+			sqls = {},
+			-- Docker
+			dockerls = {},
+			-- Markdown
+			marksman = {},
+			-- Json
+			jsonls = {
+				filetypes = { "json", "jsonc" },
+			},
+			-- Toml
+			taplo = {},
+		},
+	},
+	config = function(_, opts)
 		local function on_attach(client, bufnr)
 			local function keymap(m, k, v)
 				vim.keymap.set(m, k, v, { noremap = true, silent = true, buffer = bufnr })
@@ -30,104 +86,18 @@ return {
 			keymap("n", "<leader>rn", vim.lsp.buf.rename)
 		end
 
-		-- lua
-		lspconfig.lua_ls.setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-			settings = {
-				Lua = {
-					diagnostics = {
-						globals = { "vim" },
-					},
-					workspace = {
-						-- make language server aware of runtime files
-						[vim.fn.expand("$VIMRUNTIME/lua")] = true,
-						[vim.fn.stdpath("config") .. "/lua"] = true,
-					},
-					completion = { callSnippet = "Replace" },
-				},
-			},
-		})
+		local lspconfig = require("lspconfig")
+		for server, config in pairs(opts.servers) do
+			config.on_attach = on_attach
+			-- config.capabilities = require("blink.cmp").get_lsp_capabilities()
+			config.capabilities = require("cmp_nvim_lsp").default_capabilities()
+			lspconfig[server].setup(config)
+		end
 
-		-- json
-		lspconfig.jsonls.setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-			filetypes = { "json", "jsonc" },
-		})
-
-		-- python
-		lspconfig.pyright.setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-			settings = {
-				pyright = {
-					disableOrganizeImports = false,
-					analysis = {
-						useLibraryCodeForTypes = true,
-						autoSearchPaths = true,
-						diagnosticMode = "workspace",
-						autoImportCompletions = true,
-					},
-				},
-			},
-		})
-
-		-- bash
-		lspconfig.bashls.setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-			filetypes = {
-				"sh",
-				"aliasrc",
-			},
-		})
-
-		-- docker
-		lspconfig.dockerls.setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-		})
-
-		-- C/C++
-		lspconfig.clangd.setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-			cmd = {
-				"clangd",
-				"--offset-encoding=utf-16",
-			},
-		})
-
-		-- C#
-		lspconfig.csharp_ls.setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-		})
-
-		-- go
-		lspconfig.gopls.setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-		})
-
-		-- sql
-		lspconfig.sqls.setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-		})
-
-		-- toml
-		lspconfig.taplo.setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-		})
-
-		-- markdown
-		lspconfig.marksman.setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-		})
+		keymap("n", "gF", vim.diagnostic.open_float)
+		keymap("n", "gn", vim.diagnostic.goto_next)
+		keymap("n", "gN", vim.diagnostic.goto_prev)
+		keymap("n", "gl", vim.diagnostic.setloclist)
 
 		-- efm
 		local stylua = require("efmls-configs.formatters.stylua")
@@ -139,21 +109,15 @@ return {
 		local hadolint = require("efmls-configs.linters.hadolint")
 		local sql_formatter = require("efmls-configs.formatters.sql-formatter")
 		local taplo = require("efmls-configs.formatters.taplo")
-		-- local clang_format = require("efmls-configs.formatters.clang_format")
-		-- local fs = require("efmls-configs.fs")
-		-- clang_format["formatCommand"] =
-		-- 	string.format("%s --style=\"{BasedOnStyle: Google, IndentWidth: 4}\" '${INPUT}'", fs.executable("clang-format"))
 
 		local languages = {
-			-- c = { clang_format },
-			-- cpp = { clang_format },
 			lua = { stylua },
+			sh = { shellcheck, shfmt },
+			sql = { sql_formatter },
+			docker = { hadolint, prettier_d },
+			markdown = { prettier_d },
 			json = { eslint, fixjson },
 			jsonc = { eslint, fixjson },
-			sh = { shellcheck, shfmt },
-			markdown = { prettier_d },
-			docker = { hadolint, prettier_d },
-			sql = { sql_formatter },
 			toml = { taplo },
 		}
 
@@ -175,9 +139,9 @@ return {
 	dependencies = {
 		"windwp/nvim-autopairs",
 		"williamboman/mason.nvim",
-		"hrsh7th/nvim-cmp",
-		"hrsh7th/cmp-buffer",
-		"hrsh7th/cmp-nvim-lsp",
+		"saghen/blink.cmp",
+		-- "hrsh7th/cmp-buffer",
+		-- "hrsh7th/cmp-nvim-lsp",
 		{ "folke/neodev.nvim", opts = {} },
 	},
 }

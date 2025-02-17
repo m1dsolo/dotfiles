@@ -13,15 +13,16 @@ choice="$(printf "%s\n" "${choices[@]}" | dmenu -c -i -l ${#choices[@]} -p "Scre
 timestamp="$(date '+%y%m%d-%H%M-%S')"
 pic_path="$([ -d "$HOME/Pictures" ] && echo "$HOME/Pictures" || echo "$HOME")"
 
+# maim args: -u: hide cursor, -i: select window, -s: select area
 case $choice in
     "${choices[0]}") {
         pic_name="$pic_path/pic-selected-$timestamp.png"
-        maim -s "$pic_name"
+        maim -us "$pic_name"
         notify-send "Screenshot saved as:" "$pic_name"
     };;
     "${choices[1]}") {
         pic_name="$pic_path/pic-window-$timestamp.png"
-        maim -i $(xdotool getactivewindow) "$pic_name"
+        maim -ui $(xdotool getactivewindow) "$pic_name"
         notify-send "Screenshot saved as:" "$pic_name"
     };;
     "${choices[2]}") {
@@ -30,15 +31,15 @@ case $choice in
         notify-send "Screenshot saved as:" "$pic_name"
     };;
     "${choices[3]}") {
-        maim -s | xclip -selection clipboard -t image/png
+        maim -us | xclip -selection clipboard -t image/png
         notify-send "Screenshot copied to clipboard"
     };;
     "${choices[4]}") {
-        maim -i "$(xdotool getactivewindow)" | xclip -selection clipboard -t image/png
+        maim -ui "$(xdotool getactivewindow)" | xclip -selection clipboard -t image/png
         notify-send "Screenshot copied to clipboard"
     };;
     "${choices[5]}") {
-        maim | xclip -selection clipboard -t image/png
+        maim -u | xclip -selection clipboard -t image/png
         notify-send "Screenshot copied to clipboard"
     };;
 esac

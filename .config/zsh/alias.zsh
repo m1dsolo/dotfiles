@@ -24,6 +24,3 @@ alias chromium="chromium --proxy-server=$PROXY_ADDRESS"
 alias gdb="gdb -q"
 alias ffmpeg="ffmpeg -hide_banner"
 alias youtube-dl="youtube-dl --add-metadata -i"
-
-# abbreviations
-alias z="zathura"

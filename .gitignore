@@ -9,3 +9,5 @@ snippets
 .local/src/dwmblocks/dwmblocks
 .local/src/st/st
 .local/src/dmenu/dmenu
+.config/nvim/lua/plugins/bak
+.zcompdump

@@ -76,6 +76,9 @@ return {
 				},
 				{ name = "vim-dadbod-completion" },
 			}),
+			experimental = {
+				ghost_text = true,
+			},
 		})
 	end,
 	dependencies = {

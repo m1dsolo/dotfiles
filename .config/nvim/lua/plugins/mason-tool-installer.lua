@@ -7,6 +7,8 @@ return {
 			-- cpp
 			"clangd",
 			"clang-format",
+			-- rust
+			"rust-analyzer",
 			-- go
 			"gopls",
 			-- python

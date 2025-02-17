@@ -34,7 +34,7 @@ keymap("n", "<right>", ":vertical resize+3<CR>")
 -- other
 keymap("n", "n", "nzz")
 keymap("n", "N", "Nzz")
-keymap("n", "<leader><CR>", ":nohls<CR>")
+keymap("n", "<leader><CR>", ":nohls<CR>") -- replace in 'plugins/nvim-notify.lua'
 keymap("n", "cc", "<CMD>write<CR><CMD>:!c %<CR><CR>")
 vim.api.nvim_create_autocmd({ "TermEnter" }, { -- quit terminal mode
 	pattern = { "*" },
@@ -63,4 +63,3 @@ keymap("n", "gz", function()
 	local pdf_path = vim.fn.expand("<cfile>")
 	vim.fn.system("zathura " .. pdf_path .. " &")
 end)
-

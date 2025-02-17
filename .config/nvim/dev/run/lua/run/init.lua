@@ -32,9 +32,9 @@ function M.setup(opts)
 		elseif ft == "cs" then
 			split_window()
 			vim.cmd("term dotnet run")
-        elseif ft == "sh" then
-            split_window()
-            vim.cmd("term zsh %")
+		elseif ft == "sh" then
+			split_window()
+			vim.cmd("term zsh %")
 		elseif ft == "go" then
 			split_window()
 			vim.cmd("term go run %")

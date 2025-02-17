@@ -23,6 +23,18 @@ prepend_keymap = [
     "g",
     "/",
   ], run = "cd /", desc = "Cd to /" },
+  { on = [
+    "g",
+    ".",
+  ], run = "cd ~/.dotfiles", desc = "Cd to ~/.dotfiles" },
+  { on = [
+    "g",
+    "t",
+  ], run = "cd ~/.local/share/Trash/files", desc = "Cd to Trash" },
+  { on = [
+    "g",
+    "C",
+  ], run = "cd ~/code", desc = "Cd to ~/code" },
 
   # shell
   { on = "<C-g>", run = "shell --confirm --block lazygit", desc = "Lazygit" },
