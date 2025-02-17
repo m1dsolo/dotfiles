@@ -1,0 +1,21 @@
+return {
+	"akinsho/bufferline.nvim",
+	lazy = false,
+	version = "*",
+	dependencies = "nvim-tree/nvim-web-devicons",
+	opts = {},
+	keys = {
+		{ "<leader>h", ":BufferLineCyclePrev<CR>", silent = true },
+		{ "<leader>l", ":BufferLineCycleNext<CR>", silent = true },
+		{ "<leader>q", ":BufferLinePick<CR>", silent = true },
+		{ "<leader>1", ":BufferLineGoToBuffer 1<CR>", silent = true },
+		{ "<leader>2", ":BufferLineGoToBuffer 2<CR>", silent = true },
+		{ "<leader>3", ":BufferLineGoToBuffer 3<CR>", silent = true },
+		{ "<leader>4", ":BufferLineGoToBuffer 4<CR>", silent = true },
+		{ "<leader>5", ":BufferLineGoToBuffer 5<CR>", silent = true },
+		{ "<leader>6", ":BufferLineGoToBuffer 6<CR>", silent = true },
+		{ "<leader>7", ":BufferLineGoToBuffer 7<CR>", silent = true },
+		{ "<leader>8", ":BufferLineGoToBuffer 8<CR>", silent = true },
+		{ "<leader>9", ":BufferLineGoToBuffer 9<CR>", silent = true },
+	},
+}

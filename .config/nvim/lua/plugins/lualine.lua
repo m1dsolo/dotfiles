@@ -13,6 +13,10 @@ return {
 	dependencies = { "nvim-tree/nvim-web-devicons" },
 	opts = {
 		theme = "gruvbox",
+		options = {
+			component_separators = { left = "", right = "" },
+			section_separators = { left = "", right = "" },
+		},
 		sections = {
 			lualine_b = {
 				{
