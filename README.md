@@ -22,3 +22,13 @@ This repository contains my personal dotfiles. You might find some interesting c
 ## Additional Information
 
 For more details, see the [wiki](https://github.com/m1dsolo/dotfiles/wiki).
+
+## Installation
+
+```bash
+git clone https://github.com/m1dsolo/dotfiles.git ~/.dotfiles
+cd ~/.dotfiles
+./init.sh
+```
+
+In order to use `setbg` to set wallpaper, you need to download a wallpaper and symlink it to `~/.local/share/bg`:

@@ -7,7 +7,7 @@ return {
 	keys = {
 		{ "<leader>h", ":BufferLineCyclePrev<CR>", silent = true },
 		{ "<leader>l", ":BufferLineCycleNext<CR>", silent = true },
-		{ "<leader>q", ":BufferLinePick<CR>", silent = true },
+		{ "<leader>q", ":bdelete<CR>", silent = true },
 		{ "<leader>1", ":BufferLineGoToBuffer 1<CR>", silent = true },
 		{ "<leader>2", ":BufferLineGoToBuffer 2<CR>", silent = true },
 		{ "<leader>3", ":BufferLineGoToBuffer 3<CR>", silent = true },

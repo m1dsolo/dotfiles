@@ -23,8 +23,11 @@ return {
 			"csharp-language-server",
 			-- bash
 			"bash-language-server",
+			-- docker
+			"dockerfile-language-server",
 			-- json
 			"json-lsp",
+            "fixjson",
 			-- toml
 			"taplo",
 			-- markdown,

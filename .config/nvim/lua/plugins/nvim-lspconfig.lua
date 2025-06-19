@@ -109,6 +109,7 @@ return {
 		local hadolint = require("efmls-configs.linters.hadolint")
 		local sql_formatter = require("efmls-configs.formatters.sql-formatter")
 		local taplo = require("efmls-configs.formatters.taplo")
+		local rustfmt = require("efmls-configs.formatters.rustfmt")
 
 		local languages = {
 			lua = { stylua },
@@ -119,6 +120,7 @@ return {
 			json = { eslint, fixjson },
 			jsonc = { eslint, fixjson },
 			toml = { taplo },
+			rust = { rustfmt },
 		}
 
 		lspconfig.efm.setup({

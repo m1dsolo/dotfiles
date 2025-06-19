@@ -23,4 +23,4 @@ plug "zsh-users/zsh-completions"
 plug "zdharma-continuum/fast-syntax-highlighting"
 
 # neofetch
-command -v neofetch &> /dev/null && neofetch
+# command -v neofetch &> /dev/null && neofetch

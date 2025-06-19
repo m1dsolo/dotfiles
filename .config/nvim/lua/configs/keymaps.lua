@@ -36,6 +36,7 @@ keymap("n", "n", "nzz")
 keymap("n", "N", "Nzz")
 keymap("n", "<leader><CR>", ":nohls<CR>") -- replace in 'plugins/nvim-notify.lua'
 keymap("n", "cc", "<CMD>write<CR><CMD>:!c %<CR><CR>")
+keymap("n", "<leader>t", ":tabnew<CR>")
 vim.api.nvim_create_autocmd({ "TermEnter" }, { -- quit terminal mode
 	pattern = { "*" },
 	group = group,

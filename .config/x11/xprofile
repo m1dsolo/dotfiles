@@ -1,0 +1,9 @@
+#!/bin/sh
+
+xrandr --dpi 96
+setbg &
+remaps &
+fcitx5 -d &
+dwmblocks &
+picom -b &
+unclutter &

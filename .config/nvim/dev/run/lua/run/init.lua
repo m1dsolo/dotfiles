@@ -29,6 +29,9 @@ function M.setup(opts)
 			vim.cmd(
 				string.format("term clang -Wall -g -std=c23 %% -o %s && ./%s; rm %s", temp_name, temp_name, temp_name)
 			)
+		elseif ft == "rust" then
+			split_window()
+			vim.cmd(string.format("term cargo run $(cat ~/.cache/data)"))
 		elseif ft == "cs" then
 			split_window()
 			vim.cmd("term dotnet run")

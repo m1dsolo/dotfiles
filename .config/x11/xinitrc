@@ -1,0 +1,5 @@
+#!/bin/sh
+
+~/.config/x11/xprofile
+
+ssh-agent dwm
