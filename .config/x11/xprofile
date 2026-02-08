@@ -4,6 +4,7 @@ xrandr --dpi 96
 setbg &
 remaps &
 fcitx5 -d &
+dunst &
 dwmblocks &
 picom -b &
 unclutter &

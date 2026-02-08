@@ -1,0 +1,21 @@
+#!/bin/sh
+
+SCRIPT_PATH=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
+source "${SCRIPT_PATH}/../utils.sh"
+
+TARGET_DIR="$HOME/Documents/markdown"
+
+check_dependency "tmenu"
+check_directory "$TARGET_DIR"
+
+selected_file=$(command find "$TARGET_DIR" -type f -name "*.md" -printf "%P\n")
+
+selected_file=$(echo "$selected_file" | tmenu)
+
+if [ -n "$selected_file" ]; then
+    editor=$(get_editor)
+    $editor "$TARGET_DIR/$selected_file"
+else
+    echo "not choose file"
+    exit 0
+fi

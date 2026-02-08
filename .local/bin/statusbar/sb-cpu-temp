@@ -1,0 +1,15 @@
+#!/bin/sh
+
+# 根据鼠标按键执行不同操作
+case $BUTTON in
+    1) notify-send "󰻠 CPU hogs" "$(ps axch -o cmd:15,%cpu --sort=-%cpu | head)\\n(100% per core)" ;;
+    2) setsid -f "$TERMINAL" -e htop ;;
+    3) notify-send "󰻠 CPU module " "\- Shows CPU temperature.
+- Click to show intensive processes.
+- Middle click to open htop." ;;
+    6) "$TERMINAL" -e "$EDITOR" "$0" ;;
+esac
+
+# 从 sensors 输出中提取 CPU 温度（k10temp 的 Tctl）
+# 匹配 Tctl 行，提取温度值并保留一位小数，加上图标输出
+sensors -u | awk '/Tctl:/ {getline; printf "󰔏 %.1f°C\n", $2}'

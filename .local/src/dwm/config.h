@@ -34,11 +34,9 @@ typedef struct {
 	const void *cmd;
 } Sp;
 const char *spcmd1[] = {TERMINAL, "-n", "spterm", "-g", "120x34", NULL};
-const char *spcmd2[] = {TERMINAL, "-n", "spnote", "-g", "120x34", "-e", "/bin/zsh", "-c", "nvim ~/vault", NULL};
 static Sp scratchpads[] = {
 	/* name          cmd  */
 	{"spterm",      spcmd1},
-	{"spnote",      spcmd2},
 };
 
 /* tagging */
@@ -53,7 +51,6 @@ static const Rule rules[] = {
 	// { "Firefox",  NULL,         NULL,       1 << 8,         0,            0,          -1,        -1 },
     { TERMINAL,   NULL,         NULL,       0,              0,            1,           0,        -1 },
 	{ NULL,		  "spterm",		NULL,		SPTAG(0),		1,			  1,           0,        -1 },
-	{ NULL,		  "spnote",		NULL,		SPTAG(1),		1,			  1,           0,        -1 },
 };
 
 /* layout(s) */
@@ -90,7 +87,8 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_d,      spawn,          SHCMD("dmenu_run") },
 	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
     { MODKEY|ShiftMask,             XK_Return, togglescratch,  {.ui = 0} },
-    { MODKEY,                       XK_apostrophe,togglescratch, {.ui = 1} }, // note
+    { MODKEY,                       XK_apostrophe,spawn,       SHCMD(TERMINAL " -e tm-markdown") }, // note
+    // { MODKEY,                       XK_apostrophe,spawn,       SHCMD("tm-markdown") }, // note
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },

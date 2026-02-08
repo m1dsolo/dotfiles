@@ -1,31 +1,43 @@
 #!/bin/sh
 
-# Prints the current volume or 🔇 if muted.
+# Prints the current volume or Nerd Fonts mute icon if muted.
+# 适配dwm/st状态栏，兼容Arch Linux Nerd Fonts渲染
 
-# case $BLOCK_BUTTON in
 case $BUTTON in
 	1) setsid -f "$TERMINAL" -e pulsemixer ;;
 	2) pamixer -t ;;
 	4) pamixer --allow-boost -i 1 ;;
 	5) pamixer --allow-boost -d 1 ;;
-	3) notify-send "📢 Volume module" "\- Shows volume 🔊, 🔇 if muted.
+	3) notify-send "󰕾 Volume module" "\- Shows volume 󰕾/󰖀/󰕿, 󰖁 if muted.
 - Middle click to mute.
 - Scroll to change." ;;
 	6) "$TERMINAL" -e "$EDITOR" "$0" ;;
 esac
 
-[ $(pamixer --get-mute) = true ] && echo 🔇 && exit
-
-vol="$(pamixer --get-volume)"
-
-if [ "$vol" -gt "70" ]; then
-	icon="🔊"
-elif [ "$vol" -gt "30" ]; then
-	icon="🔉"
-elif [ "$vol" -gt "0" ]; then
-	icon="🔈"
-else
-    echo 🔇 && exit
+# 容错处理：如果pamixer命令执行失败，直接返回静音图标
+if ! command -v pamixer &> /dev/null; then
+    echo "󰖁" && exit 1
 fi
 
-echo "$icon$vol%"
+# 获取静音状态（处理命令返回值异常）
+mute_status=$(pamixer --get-mute 2>/dev/null)
+if [ "$mute_status" = "true" ]; then
+    echo "󰖁" && exit
+fi
+
+# 获取音量值（处理空值）
+vol=$(pamixer --get-volume 2>/dev/null)
+[ -z "$vol" ] && echo "󰖁" && exit
+
+# 根据音量值匹配Nerd Fonts图标
+if [ "$vol" -gt "70" ]; then
+	icon="󰕾"          # 高音量
+elif [ "$vol" -gt "30" ]; then
+	icon="󰖀"          # 中音量
+elif [ "$vol" -gt "0" ]; then
+	icon="󰕿"          # 低音量
+else
+    echo "󰖁" && exit   # 音量为0时显示静音
+fi
+
+echo "$icon $vol%"

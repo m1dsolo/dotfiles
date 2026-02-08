@@ -6,7 +6,12 @@ sort_by = "natural"
 prepend_rules = [
   { name = "*.diff", use = "edit" },
   { mime = "application/*-executable", use = "execute" },
+  { mime = "image/*", use = "sxiv" },
 ]
 
 [opener]
 execute = [{ run = './"$(basename "$1")"', desc = "Execute", for = "linux" }]
+sxiv = [{ run = 'sxiv "$@"', arphan = false, block = true, for = "linux" }]
+
+[plugins]
+enabled = ["smark-enter"]

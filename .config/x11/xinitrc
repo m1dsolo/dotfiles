@@ -1,5 +1,9 @@
 #!/bin/sh
 
-~/.config/x11/xprofile
+[ -f ~/.local/bin/remaps ] && ~/.local/bin/remaps
 
-ssh-agent dwm
+[ -f ~/.config/x11/xprofile ] && source ~/.config/x11/xprofile
+
+# ssh-agent dwm
+eval $(ssh-agent -s)
+exec dwm

@@ -14,11 +14,11 @@ done; unset command
 # add flag
 alias cp="cp -iv"
 alias diff="diff --color=auto"
-alias ls="ls -vhN --color=auto --group-directories-first"
+alias ls="exa --group-directories-first"
 alias mv="mv -iv"
-alias grep="grep --color=auto"
+alias grep="rg --color=auto"
 alias mkdir="mkdir -p"
-alias tree="tree -C"
+alias tree="exa --tree --color=auto"
 command -v trash-put &>/dev/null && alias rm="trash-put"
 
 alias chromium="chromium --proxy-server=$PROXY_ADDRESS"
@@ -28,3 +28,5 @@ alias youtube-dl="youtube-dl --add-metadata -i"
 
 # abbreviations
 alias lg="lazygit"
+alias copy="xclip -selection clipboard"
+alias paste="xclip -o -selection clipboard"

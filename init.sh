@@ -17,7 +17,7 @@ ln -s "$DOTFILES_DIR"/.config/* ~/.config
 ln -s "$DOTFILES_DIR"/.local/bin/* ~/.local/bin
 ln -s "$DOTFILES_DIR"/.local/share/* ~/.local/share
 
-ln -s "$DOTFILES_DIR"/.config/zsh/.zprofile ~
+ln -s "$DOTFILES_DIR"/.config/zsh/.zshenv ~
 
 cd ~/.local/src/dwm
 sudo make clean install

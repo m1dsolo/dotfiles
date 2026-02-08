@@ -33,7 +33,7 @@ function M.setup(opts)
 	vim.api.nvim_create_autocmd("BufWritePost", {
 		group = group,
 		callback = function(ev)
-			local efm = vim.lsp.get_active_clients({ name = "efm", bufnr = ev.buf })
+			local efm = vim.lsp.get_clients({ name = "efm", bufnr = ev.buf })
 
 			if vim.tbl_isempty(efm) then
 				return
