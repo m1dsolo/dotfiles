@@ -1,0 +1,33 @@
+[global]
+    monitor = 0
+    follow = keyboard
+    width = 370
+    height = 350
+    offset = 11x44
+    padding = 4
+    horizontal_padding = 10
+    frame_width = 2
+    transparency = 0
+    font = SauceCodePro Nerd Font Mono 16
+    format = "<b>%s</b>\n%b"
+    vertical_alignment = center
+    dmenu = /usr/bin/dmenu -p dunst
+    corner_radius = 8
+
+[urgency_low]
+    background = "#FFB6C1"
+    foreground = "#434C5E"
+    frame_color = "#FF7681"
+    timeout = 3
+
+[urgency_normal]
+    background = "#FFB6C1"
+    foreground = "#434C5E"
+    frame_color = "#FF7681"
+    timeout = 5
+
+[urgency_critical]
+    background = "#900000"
+    foreground = "#FFFFFF"
+    frame_color = "#FF0000"
+    timeout = 10

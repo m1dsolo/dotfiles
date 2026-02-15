@@ -5,9 +5,8 @@
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
-static char *font = "Source Code Pro:pixelsize=24:antialias=true:autohint=true";
+static char *font = "SauceCodePro Nerd Font Mono:pixelsize=24:antialias=true:autohint=true";
 static char *font2[] = {
-    "SauceCodePro Nerd Font Mono:pixelsize=24:antialias=true:autohint=true",
     "Source Han Sans CN:pixelsize=24:antialias=true:autohint=true",
 };
 static int borderpx = 2;

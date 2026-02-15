@@ -12,11 +12,10 @@ static const int topbar             = 1;        /* 0 means bottom bar */
 static const int vertpad            = 6;       /* vertical padding of bar */
 static const int sidepad            = 6;       /* horizontal padding of bar */
 static const char *fonts[]          = {
-    "Source Code Pro:pixelsize=16:antialias=true:autohint=true"
-    "SauceCodeProNerdFont:pixelsize=16:antialias=true:autohint=true",
-    "SourceHanSansCN:pixelsize=16:antialias=true:autohint=true",
+    "SauceCodePro Nerd Font Mono:pixelsize=20:antialias=true:autohint=true",
+    "SourceHanSansCN:pixelsize=20:antialias=true:autohint=true",
 };
-static const char dmenufont[]       = "Source Code Pro:pixelsize=16:antialias=true:autohint=true";
+static const char dmenufont[]       = "SauceCodePro Nerd Font Mono:pixelsize=20:antialias=true:autohint=true";
 static const char normfgcolor[]     = "#434C5E";
 static const char normbgcolor[]     = "#FFD6E1";
 static const char normbordercolor[] = "#FFD6E1";
