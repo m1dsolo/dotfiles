@@ -20,6 +20,7 @@ export BROWSER="chromium"
 export PROXY_SERVER="127.0.0.1"
 export PROXY_PORT=7890
 export PROXY_ADDRESS=$PROXY_SERVER:$PROXY_PORT
+export GOPROXY="https://goproxy.cn,direct"
 
 # fcitx
 export GTK_IM_MODULE=fcitx

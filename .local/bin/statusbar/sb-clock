@@ -2,7 +2,7 @@
 
 case $BUTTON in
 	1) notify-send "This Month" "$(cal --color=always | sed "s/..7m/<b><span color=\"red\">/;s/..27m/<\/span><\/b>/")" && notify-send "Appointments" "$(calcurse -d3)" ;;
-	6) "$TERMINAL" -e "$EDITOR" "$0" ;;
+	2) "$TERMINAL" -e "$EDITOR" "$0" ;;
 esac
 
-date "+%Y-%m-%d(%a) %H:%M "
+date "+ %Y-%m-%d(%a) %H:%M "

@@ -1,41 +1,21 @@
 #!/bin/sh
 
-# 硬盘使用状态显示脚本（Nerd Fonts适配版）
-# 适配dwm/st状态栏，兼容Arch Linux Nerd Fonts渲染
-# 默认检测根目录(/)，如需检测其他分区，修改脚本中 MOUNT_POINT 变量即可
-
-# 配置要检测的硬盘分区（默认根目录，可改为 /home 等）
-MOUNT_POINT="/"
+# Shows disk usage.
+# For dwm/st status bar, compatible with Arch Linux Nerd Fonts rendering
 
 case $BUTTON in
 	1) notify-send "󰋊 Disk hogs" "$(du -sh /home/* 2>/dev/null | sort -rh | head -10)" ;;
-	2) setsid -f "$TERMINAL" -e ncdu "$MOUNT_POINT" ;;
-	3) notify-send "󰋊 Disk module" "\- Shows Disk Used/Total (${MOUNT_POINT}).
-- Left click: Show largest files in /home.
-- Middle click: Open ncdu (interactive disk analyzer).
-- Right click edit: Modify MOUNT_POINT to check other partitions." ;;
+	2) setsid -f "$TERMINAL" -e ncdu "/" ;;
+	3) notify-send "󰋊 Disk module" "\- Shows disk usage" ;;
 	6) "$TERMINAL" -e "$EDITOR" "$0" ;;
 esac
 
-# 容错处理：如果df命令执行失败，返回默认提示
-if ! df --human-readable >/dev/null 2>&1; then
-    echo "󰋊 Error" && exit 1
-fi
+disk_info=$(df -P / 2>/dev/null | sed -n '2{p;q}')
+[ -z "$disk_info" ] && echo "󰋊" && exit 1
 
-# 提取硬盘使用数据（适配不同语言环境，用POSIX格式避免中文表头问题）
-# -P 参数强制POSIX格式，确保列数和字段稳定
-disk_info=$(df -P --block-size=1G "$MOUNT_POINT" 2>/dev/null | sed -n '2{p;q}')
-
-# 容错：如果获取不到分区信息
-if [ -z "$disk_info" ]; then
-    echo "󰋊 Unavailable" && exit 1
-fi
-
-# 格式化输出（Nerd Fonts硬盘图标+已用/总容量+使用率）
 echo "$disk_info" | awk '{
-    used = $3 + 0  # 转为数字，避免空值
-    total = $2 + 0
-    usage = $5     # 使用率（如 56%）
-    # 保留1位小数（硬盘容量无需2位，更简洁）
-    printf ("󰋊 %.1fGiB/%.1fGiB (%s)\n", used, total, usage)
+    used = $3
+    total = $2
+    pct = int(used * 100 / total)
+    printf ("%d%%󰋊\n", pct)
 }'

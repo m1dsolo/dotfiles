@@ -1,15 +1,13 @@
 #!/bin/sh
 
-# 根据鼠标按键执行不同操作
+# Execute different operations based on mouse button
 case $BUTTON in
     1) notify-send "󰻠 CPU hogs" "$(ps axch -o cmd:15,%cpu --sort=-%cpu | head)\\n(100% per core)" ;;
-    2) setsid -f "$TERMINAL" -e htop ;;
-    3) notify-send "󰻠 CPU module " "\- Shows CPU temperature.
-- Click to show intensive processes.
-- Middle click to open htop." ;;
-    6) "$TERMINAL" -e "$EDITOR" "$0" ;;
+    2) "$TERMINAL" -e "$EDITOR" "$0" ;;
+    3) setsid -f "$TERMINAL" -e htop ;;
 esac
 
-# 从 sensors 输出中提取 CPU 温度（k10temp 的 Tctl）
-# 匹配 Tctl 行，提取温度值并保留一位小数，加上图标输出
-sensors -u | awk '/Tctl:/ {getline; printf "󰔏 %.1f°C\n", $2}'
+# Extract CPU temperature from sensors output (k10temp's Tctl)
+# Match Tctl line, extract temperature value and keep 1 decimal, add icon output
+temp=$(sensors -u 2>/dev/null | awk '/(temp1_input|Tctl_input):/ {printf "%.0f°C", $2; exit}')
+[ -n "$temp" ] && echo "$temp󰔏" || echo "󰔏"

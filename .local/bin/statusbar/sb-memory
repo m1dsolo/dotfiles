@@ -1,25 +1,23 @@
 #!/bin/sh
 
-# 内存使用状态显示脚本（Nerd Fonts适配版）
-# 适配dwm/st状态栏，兼容Arch Linux Nerd Fonts渲染
+# Memory usage display script (Nerd Fonts compatible version)
+# For dwm/st status bar, compatible with Arch Linux Nerd Fonts rendering
 
 case $BUTTON in
 	1) notify-send "󰍛 Memory hogs" "$(ps axch -o cmd:15,%mem --sort=-%mem | head)" ;;
-	2) setsid -f "$TERMINAL" -e htop ;;
-	3) notify-send "󰍛 Memory module" "\- Shows Memory Used/Total.
-- Click to show memory hogs.
-- Middle click to open htop." ;;
-	6) "$TERMINAL" -e "$EDITOR" "$0" ;;
+	2) "$TERMINAL" -e "$EDITOR" "$0" ;;
+    3) setsid -f "$TERMINAL" -e htop ;;
 esac
 
-# 容错处理：如果free命令执行失败，返回默认提示
+# Error handling: return default prompt if free command fails
 if ! free --mebi >/dev/null 2>&1; then
     echo "󰍛 Error" && exit 1
 fi
 
-# 提取内存使用数据并格式化输出（替换为Nerd Fonts内存图标）
+# Extract and format memory usage data (replaced with Nerd Fonts memory icon)
 free --mebi | sed -n '2{p;q}' | awk '{
-    used = $3 / 1024
-    total = $2 / 1024
-    printf ("󰍛 %.2fGiB/%.2fGiB\n", used, total)
+    used = $3
+    total = $2
+    pct = int(used * 100 / total)
+    printf ("%d%%󰍛\n", pct)
 }'

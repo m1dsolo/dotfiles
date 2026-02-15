@@ -1,36 +1,23 @@
 #!/bin/sh
 
-# NVIDIA显存使用状态显示脚本（Nerd Fonts适配版）
-# 适配dwm/st状态栏，兼容Arch Linux Nerd Fonts渲染
-# 仅支持NVIDIA显卡（依赖nvidia-smi命令）
+# Shows GPU memory usage.
+# For dwm/st status bar, compatible with Arch Linux Nerd Fonts rendering
 
 case $BUTTON in
 	1) notify-send "󰾮 GPU hogs" "$(nvidia-smi --query-gpu=pid,process_name,used_memory --format=csv,noheader,nounits | sort -rnk3 | head -10)" ;;
-	2) setsid -f "$TERMINAL" -e nvidia-smi ;;
-	3) notify-send "󰾮 GPU Memory module" "\- Shows GPU Memory Used/Total.
-- Left click: Show top 10 processes using GPU memory.
-- Middle click: Open full nvidia-smi info.
-- Right click edit: Modify script (e.g., add more GPU stats)." ;;
-	6) "$TERMINAL" -e "$EDITOR" "$0" ;;
+	2) "$TERMINAL" -e "$EDITOR" "$0" ;;
+    3) setsid -f "$TERMINAL" -e nvidia-smi ;;
 esac
 
-# 容错处理1：检查nvidia-smi是否存在（未装NVIDIA驱动会报错）
-if ! command -v nvidia-smi &> /dev/null; then
-    echo "󰾮 No NVIDIA" && exit 1
-fi
+command -v nvidia-smi >/dev/null 2>&1 || exit 1
+nvidia-smi -L >/dev/null 2>&1 || exit 1
 
-# 容错处理2：检查NVIDIA显卡是否正常识别
-if ! nvidia-smi --query-gpu=memory.used,memory.total --format=csv,noheader,nounits &> /dev/null; then
-    echo "󰾮 Unavailable" && exit 1
-fi
+gpu_mem=$(nvidia-smi --query-gpu=memory.used,memory.total --format=csv,noheader,nounits)
+[ -z "$gpu_mem" ] && exit 1
 
-# 提取显存数据（used=已用MB, total=总MB）
-gpu_mem=$(nvidia-smi --query-gpu=memory.used,memory.total --format=csv,noheader,nounits | head -n1)
-
-# 格式化输出（转为GiB，保留1位小数，适配Nerd Fonts图标）
 echo "$gpu_mem" | awk -F ', ' '{
-    used = $1 / 1024
-    total = $2 / 1024
-    # NVIDIA显存图标 + 已用/总容量（GiB）
-    printf ("󰾮 %.1fGiB/%.1fGiB\n", used, total)
+    used = $1
+    total = $2
+    pct = int(used * 100 / total)
+    printf ("%d%%󰾮\n", pct)
 }'

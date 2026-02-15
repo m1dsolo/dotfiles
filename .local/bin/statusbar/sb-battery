@@ -1,57 +1,50 @@
 #!/bin/sh
 
-# Prints all batteries, their percentage remaining and an emoji corresponding
-# to charge status (Nerd Fonts 图标版)
-# 适配dwm/st状态栏，兼容Arch Linux Nerd Fonts渲染
+# Prints battery percentage and icon based on charge status.
+# For dwm/st status bar, compatible with Arch Linux Nerd Fonts rendering
 
 case $BUTTON in
-	3) notify-send "🔋 Battery module" "󰁿: discharging
-󰂄: not charging
-󰔑: stagnant charge
-󰂄: charging
-󰂅: charged
-󰂃: battery very low!
-- Scroll to change adjust xbacklight." ;;
-	4) xbacklight -inc 10 ;;
-	5) xbacklight -dec 10 ;;
-	6) "$TERMINAL" -e "$EDITOR" "$0" ;;
+	1) setsid -f "$TERMINAL" -e pavucontrol ;;
+	2) "$TERMINAL" -e "$EDITOR" "$0" ;;
+	3) notify-send "󰾢 Battery module" "\- 󰾢/󰾡/󰾠/󰰎: discharging
+- 󰾫/󰾬/󰾭/󰾮: charging" ;;
 esac
 
-# 初始化容量变量，避免空值判断报错
-capacity=""
-
-# Loop through all attached batteries and format the info
 for battery in /sys/class/power_supply/BAT?*; do
-	# 跳过不存在的电池路径
 	[ ! -d "$battery" ] && continue
-	
-	# If non-first battery, print a space separator.
-	[ -n "${capacity}" ] && printf " "
-	
-	# 读取电池状态和容量，处理读取失败的情况
+
 	bat_status=$(cat "$battery/status" 2>/dev/null)
 	bat_capacity=$(cat "$battery/capacity" 2>/dev/null)
-	
-	# 状态为空/容量为空时跳过（避免脚本报错）
+
 	[ -z "$bat_status" ] || [ -z "$bat_capacity" ] && continue
 
-	# Sets up the status and capacity (Nerd Fonts 标准图标)
 	case "$bat_status" in
-		"Full") status="󰂅" ;;          # 已充满
-		"Discharging") status="󰁿" ;;   # 放电中
-		"Charging") status="󰂄" ;;      # 充电中
-		"Not charging") status="󰂄" ;;  # 未充电（和充电用同一图标，也可换󰔑）
-		"Unknown") status="󰔑" ;;       # 未知状态
-		*) continue ;;
+		"Charging")
+			if [ "$bat_capacity" -gt 75 ]; then
+				icon="󱊦"
+			elif [ "$bat_capacity" -gt 50 ]; then
+				icon="󱊥"
+			elif [ "$bat_capacity" -gt 25 ]; then
+				icon="󱊤"
+			else
+				icon="󰢟"
+			fi
+			;;
+		"Full") icon="󱊣" ;;
+		*)
+			if [ "$bat_capacity" -gt 75 ]; then
+				icon="󱊣"
+			elif [ "$bat_capacity" -gt 50 ]; then
+				icon="󱊢"
+			elif [ "$bat_capacity" -gt 25 ]; then
+				icon="󱊡"
+			else
+				icon="󰂎"
+			fi
+			;;
 	esac
-	
-	capacity="$bat_capacity"
-	# Will make a warn variable if discharging and low
-	[ "$status" = "󰁿" ] && [ "$capacity" -le 25 ] && warn="󰂃"  # 低电量警告
-	
-	# Prints the info (移除\x08避免光标回退导致的显示错乱)
-	printf "%s%s%d%%" "$status" "$warn" "$capacity"; unset warn
-done 
 
-# 最后换行，确保状态栏格式正确
-[ -n "$capacity" ] && printf "\\n"
+	printf "%s%%%s" "$bat_capacity" "$icon"
+done
+
+printf "\n"

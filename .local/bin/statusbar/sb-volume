@@ -1,43 +1,38 @@
 #!/bin/sh
 
 # Prints the current volume or Nerd Fonts mute icon if muted.
-# 适配dwm/st状态栏，兼容Arch Linux Nerd Fonts渲染
+# For dwm/st status bar, compatible with Arch Linux Nerd Fonts rendering
 
 case $BUTTON in
-	1) setsid -f "$TERMINAL" -e pulsemixer ;;
-	2) pamixer -t ;;
-	4) pamixer --allow-boost -i 1 ;;
-	5) pamixer --allow-boost -d 1 ;;
-	3) notify-send "󰕾 Volume module" "\- Shows volume 󰕾/󰖀/󰕿, 󰖁 if muted.
-- Middle click to mute.
-- Scroll to change." ;;
-	6) "$TERMINAL" -e "$EDITOR" "$0" ;;
+	1) setsid -f "$TERMINAL" -e pavucontrol ;;
+	2) "$TERMINAL" -e "$EDITOR" "$0" ;;
+	3) notify-send "󰕾 Volume module" "\- Shows volume 󰕾/󰖀/󰕿, 󰖁 if muted."
 esac
 
-# 容错处理：如果pamixer命令执行失败，直接返回静音图标
+# Error handling: return mute icon if pamixer command fails
 if ! command -v pamixer &> /dev/null; then
     echo "󰖁" && exit 1
 fi
 
-# 获取静音状态（处理命令返回值异常）
+# Get mute status (handle command return value exceptions)
 mute_status=$(pamixer --get-mute 2>/dev/null)
 if [ "$mute_status" = "true" ]; then
     echo "󰖁" && exit
 fi
 
-# 获取音量值（处理空值）
+# Get volume value (handle empty value)
 vol=$(pamixer --get-volume 2>/dev/null)
 [ -z "$vol" ] && echo "󰖁" && exit
 
-# 根据音量值匹配Nerd Fonts图标
+# Match Nerd Fonts icon based on volume value
 if [ "$vol" -gt "70" ]; then
-	icon="󰕾"          # 高音量
+	icon="󰕾"          # High volume
 elif [ "$vol" -gt "30" ]; then
-	icon="󰖀"          # 中音量
+	icon="󰖀"          # Medium volume
 elif [ "$vol" -gt "0" ]; then
-	icon="󰕿"          # 低音量
+	icon="󰕿"          # Low volume
 else
-    echo "󰖁" && exit   # 音量为0时显示静音
+    echo "󰖁" && exit   # Show mute when volume is 0
 fi
 
-echo "$icon $vol%"
+echo "$vol%$icon"
