@@ -66,9 +66,7 @@ static const Layout layouts[] = {
 #define MODKEY Mod4Mask  /* Win key */
 #define TAGKEYS(KEY,TAG) \
     { MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
-    { MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
-    { MODKEY|ShiftMask,             KEY,      tag,            {.ui = 1 << TAG} }, \
-    { MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} },
+    { MODKEY|ShiftMask,             KEY,      tag,            {.ui = 1 << TAG} },
 
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
@@ -98,15 +96,12 @@ static const Key keys[] = {
     { MODKEY|ShiftMask,             XK_f,      togglefloating, {0} },
     { MODKEY,                       XK_comma,  focusmon,       {.i = -1 } },
     { MODKEY,                       XK_period, focusmon,       {.i = +1 } },
-    { MODKEY|ShiftMask,             XK_comma,  spawn,          SHCMD("dm-monitor") },
+    { MODKEY,                       XK_backslash, spawn,       SHCMD("dm-monitor") },
     { MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
     { MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
-    { MODKEY|ShiftMask,             XK_a,      setgaps,        {.i = -1 } },
-    { MODKEY,                       XK_a,      setgaps,        {.i = +1 } },
     { 0,                            XK_Print,  spawn,          SHCMD("screenshot") },
-    { ShiftMask,                    XK_Print,  spawn,          SHCMD("dm-screenshot") },
-    { MODKEY,                       XK_Print,  spawn,          SHCMD("dm-record") },
-    { MODKEY,                       XK_Delete, spawn,          SHCMD("dm-record kill") },
+    { MODKEY|ShiftMask,             XK_a,      spawn,          SHCMD("dm-screenshot") },
+    { MODKEY,                       XK_a,      spawn,          SHCMD("dm-record") },
     { MODKEY,                       XK_minus,  spawn,          SHCMD("pamixer --allow-boost -d 5; kill -41 $(pidof dwmblocks)") },
     { MODKEY,                       XK_equal,  spawn,          SHCMD("pamixer --allow-boost -i 5; kill -41 $(pidof dwmblocks)") },
     { MODKEY,                       XK_w,      spawn,          SHCMD("$BROWSER") },
@@ -126,25 +121,19 @@ static const Key keys[] = {
     { 0,                            XF86XK_AudioMute,         spawn,  SHCMD("pamixer -t; kill -41 $(pidof dwmblocks)") },
     { 0,                            XF86XK_AudioRaiseVolume,  spawn,  SHCMD("pamixer --allow-boost -i 3; kill -41 $(pidof dwmblocks)") },
     { 0,                            XF86XK_AudioLowerVolume,  spawn,  SHCMD("pamixer --allow-boost -d 3; kill -41 $(pidof dwmblocks)") },
-    { 0,                            XF86XK_AudioPrev,          spawn,  SHCMD("mpc prev") },
-    { 0,                            XF86XK_AudioNext,          spawn,  SHCMD("mpc next") },
-    { 0,                            XF86XK_AudioPause,         spawn,  SHCMD("mpc pause") },
+    { 0,                            XF86XK_AudioPrev,         spawn,  SHCMD("mpc prev") },
+    { 0,                            XF86XK_AudioNext,         spawn,  SHCMD("mpc next") },
+    { 0,                            XF86XK_AudioPause,        spawn,  SHCMD("mpc pause") },
 };
 
 /* button definitions */
 /* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
 static const Button buttons[] = {
     /* click                event mask      button          function        argument */
-    { ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
-    { ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
     { ClkStatusText,        0,              Button1,        sigstatusbar,   {.i = 1} },
     { ClkStatusText,        0,              Button2,        sigstatusbar,   {.i = 2} },
     { ClkStatusText,        0,              Button3,        sigstatusbar,   {.i = 3} },
     { ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
-    { ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
-    { ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },
     { ClkTagBar,            0,              Button1,        view,           {0} },
-    { ClkTagBar,            0,              Button3,        toggleview,     {0} },
     { ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
-    { ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
 };
