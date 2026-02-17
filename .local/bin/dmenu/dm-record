@@ -26,7 +26,7 @@ killrecording() {
 }
 
 asktoend() {
-	response="$(printf "No\\nYes" | dmenu -i -p "Recording still active. End recording?")" &&
+	response="$(printf "No\\nYes" | dmenu -c -i -p "End Recording?")" &&
 	[ "$response" = "Yes" ] && killrecording
 }
 
@@ -155,10 +155,5 @@ askrecording() {
         };;
     esac
 }
-
-if [ "$1" = "kill" ]; then
-    [ -f /tmp/recordingpid ] && killrecording
-    exit
-fi
 
 [ -f /tmp/recordingpid ] && asktoend && exit || askrecording

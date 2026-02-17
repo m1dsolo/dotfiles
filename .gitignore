@@ -8,5 +8,8 @@ snippets
 .local/src/dwmblocks/dwmblocks
 .local/src/st/st
 .local/src/dmenu/dmenu
+.local/src/dmenu/dmenu_path
+.local/src/dmenu/dmenu_run
+.local/src/dmenu/stest
 .config/nvim/lua/plugins/bak
 .zcompdump

@@ -4,9 +4,9 @@ SCRIPT_PATH=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 source "${SCRIPT_PATH}/../utils.sh"
 
 TARGET_DIR="$HOME/Documents/markdown"
+mkdir -p "$TARGET_DIR"
 
 check_dependency "tmenu"
-check_directory "$TARGET_DIR"
 
 selected_file=$(command find "$TARGET_DIR" -type f -name "*.md" -printf "%P\n")
 

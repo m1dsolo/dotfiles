@@ -15,6 +15,6 @@ return {
 		"nvim-lua/plenary.nvim",
 	},
 	keys = {
-		{ "<leader>g", "<cmd>:LazyGit<cr>", noremap = true, silent = true },
+		{ "<leader>lg", "<cmd>:LazyGit<cr>", noremap = true, silent = true },
 	},
 }
