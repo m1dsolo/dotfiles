@@ -21,6 +21,3 @@ source "$ZAP_DIR/zap.zsh"
 plug "zsh-users/zsh-autosuggestions"
 plug "zsh-users/zsh-completions"
 plug "zdharma-continuum/fast-syntax-highlighting"
-
-# neofetch
-# command -v neofetch &> /dev/null && neofetch

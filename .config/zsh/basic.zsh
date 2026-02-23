@@ -25,4 +25,17 @@ _comp_options+=(globdots)  # include hidden files
 bindkey -M menuselect '^[[Z' reverse-menu-complete  # zsh s-tab to reverse-menu-complete
 
 # zoxide
-eval "$(zoxide init zsh)"
+eval "$(zoxide init --cmd cd zsh)"
+cdi_widget() {
+  cdi
+  zle reset-prompt
+  zle accept-line
+}
+zle -N cdi_widget
+bindkey '^z' cdi_widget
+
+# fzf
+source <(fzf --zsh)
+
+# frec
+source <(frec init zsh)

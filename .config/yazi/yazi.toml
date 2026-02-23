@@ -10,6 +10,7 @@ prepend_rules = [
 ]
 
 [opener]
+edit = [{ run = 'frec_editor "$1"', block = true, desc = "Edit with frec", for = "linux" }]
 execute = [{ run = './"$(basename "$1")"', desc = "Execute", for = "linux" }]
 sxiv = [{ run = 'sxiv "$@"', arphan = false, block = true, for = "linux" }]
 
