@@ -4,7 +4,6 @@
 # For dwm/st status bar, compatible with Arch Linux Nerd Fonts rendering
 
 case $BUTTON in
-	1) setsid -f "$TERMINAL" -e pavucontrol ;;
 	2) "$TERMINAL" -e "$EDITOR" "$0" ;;
 	3) notify-send "󰾢 Battery module" "\- 󰾢/󰾡/󰾠/󰰎: discharging
 - 󰾫/󰾬/󰾭/󰾮: charging" ;;

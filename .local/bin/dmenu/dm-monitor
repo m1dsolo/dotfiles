@@ -11,18 +11,22 @@ choice=$(printf "%s\n" "${choices[@]}" | dmenu -c -i -l ${#choices[@]} -p "Monit
 case $choice in
     "${choices[0]}") {
         xrandr --output HDMI1 --primary --auto --output eDP1 --off
+        setbg
         notify-send "Choose Monitor: HDMI1"
     };;
     "${choices[1]}") {
         xrandr --output eDP1 --primary --auto --output HDMI1 --off
+        setbg
         notify-send "Choose Monitor: eDP1"
     };;
     "${choices[2]}") {
         xrandr --output eDP1 --auto --left-of HDMI1 --auto
+        setbg
         notify-send "Choose Monitor: eDP1 left of HDMI1"
     };;
     "${choices[3]}") {
         xrandr --output eDP1 --auto --right-of HDMI1 --auto
+        setbg
         notify-send "Choose Monitor: eDP1 right of HDMI1"
     };;
 esac

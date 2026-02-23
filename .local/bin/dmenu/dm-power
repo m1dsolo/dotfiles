@@ -1,0 +1,24 @@
+#!/bin/sh
+
+choices=(
+    "Shutdown"
+    "Reboot"
+    "Hybrid Sleep"
+)
+
+choice=$(printf "%s\n" "${choices[@]}" | dmenu -c -i -l ${#choices[@]} -p "Power:")
+
+case $choice in
+    "${choices[0]}") {
+        confirm=$(printf "no\nyes" | dmenu -c -i -p "Shutdown?")
+        [ "$confirm" = "yes" ] && sudo systemctl poweroff
+    };;
+    "${choices[1]}") {
+        confirm=$(printf "no\nyes" | dmenu -c -i -p "Reboot?")
+        [ "$confirm" = "yes" ] && sudo systemctl reboot
+    };;
+    "${choices[2]}") {
+        confirm=$(printf "no\nyes" | dmenu -c -i -p "Hybrid Sleep?")
+        [ "$confirm" = "yes" ] && sudo systemctl hybrid-sleep
+    };;
+esac
