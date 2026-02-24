@@ -2,7 +2,7 @@
 # Adds `~/.local/bin` directories and softlinks to $PATH
 export PATH="$PATH:${$(find ~/.local/bin -type d -printf %p:)%%:}"
 export PATH="$PATH:${$(find ~/.local/bin -type l -printf %p:)%%:}"
-export PATH=$PATH:~/.local/bin/:~/.local/share/cargo/bin/:~/.local/share/go/bin/
+export PATH=$PATH:~/.local/bin/:~/.local/share/cargo/bin/:~/.local/share/go/bin/:~/.npm-global/bin/
 
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
