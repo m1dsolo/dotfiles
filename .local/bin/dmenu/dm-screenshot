@@ -1,45 +1,50 @@
 #!/bin/sh
 
+SCRIPT_PATH=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
+source "${SCRIPT_PATH}/../utils.sh"
+
+check_dependency "maim"
+check_dependency "xclip"
+
 choices=(
-    "a selected area"
-    "current window"
-    "full screen"
     "a selected area (copy)"
     "current window (copy)"
     "full screen (copy)"
+    "a selected area"
+    "current window"
+    "full screen"
 )
 
 choice="$(printf "%s\n" "${choices[@]}" | dmenu -c -i -l ${#choices[@]} -p "Screenshot:")"
 timestamp="$(date '+%y%m%d-%H%M-%S')"
 pic_path="$([ -d "$HOME/Pictures" ] && echo "$HOME/Pictures" || echo "$HOME")"
 
-# maim args: -u: hide cursor, -i: select window, -s: select area
 case $choice in
     "${choices[0]}") {
+        maim -us | xclip -selection clipboard -t image/png
+        notify-send "Screenshot copied to clipboard"
+    };;
+    "${choices[1]}") {
+        maim -ui "$(xdotool getactivewindow)" | xclip -selection clipboard -t image/png
+        notify-send "Screenshot copied to clipboard"
+    };;
+    "${choices[2]}") {
+        maim -u | xclip -selection clipboard -t image/png
+        notify-send "Screenshot copied to clipboard"
+    };;
+    "${choices[3]}") {
         pic_name="$pic_path/pic-selected-$timestamp.png"
         maim -us "$pic_name"
         notify-send "Screenshot saved as:" "$pic_name"
     };;
-    "${choices[1]}") {
+    "${choices[4]}") {
         pic_name="$pic_path/pic-window-$timestamp.png"
         maim -ui $(xdotool getactivewindow) "$pic_name"
         notify-send "Screenshot saved as:" "$pic_name"
     };;
-    "${choices[2]}") {
+    "${choices[5]}") {
         pic_name="$pic_path/pic-full-$timestamp.png"
         maim "$pic_name"
         notify-send "Screenshot saved as:" "$pic_name"
-    };;
-    "${choices[3]}") {
-        maim -us | xclip -selection clipboard -t image/png
-        notify-send "Screenshot copied to clipboard"
-    };;
-    "${choices[4]}") {
-        maim -ui "$(xdotool getactivewindow)" | xclip -selection clipboard -t image/png
-        notify-send "Screenshot copied to clipboard"
-    };;
-    "${choices[5]}") {
-        maim -u | xclip -selection clipboard -t image/png
-        notify-send "Screenshot copied to clipboard"
     };;
 esac

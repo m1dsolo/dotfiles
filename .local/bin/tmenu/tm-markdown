@@ -14,6 +14,7 @@ selected_file=$(echo "$selected_file" | tmenu)
 
 if [ -n "$selected_file" ]; then
     editor=$(get_editor)
+    mkdir -p "$TARGET_DIR"
     $editor "$TARGET_DIR/$selected_file"
 else
     echo "not choose file"

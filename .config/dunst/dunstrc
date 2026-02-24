@@ -18,16 +18,16 @@
     background = "#FFB6C1"
     foreground = "#434C5E"
     frame_color = "#FF7681"
-    timeout = 3
+    timeout = 5
 
 [urgency_normal]
     background = "#FFB6C1"
     foreground = "#434C5E"
     frame_color = "#FF7681"
-    timeout = 5
+    timeout = 7
 
 [urgency_critical]
-    background = "#900000"
+    background = "#FF7681"
     foreground = "#FFFFFF"
     frame_color = "#FF0000"
     timeout = 10

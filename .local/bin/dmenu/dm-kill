@@ -1,0 +1,7 @@
+#!/bin/sh
+
+pid=$(ps -u "$USER" -o pid,comm,%cpu,%mem | dmenu -i -c -l 10 -p Kill: | awk '{print $1}')
+
+if [ -n "$pid" ]; then
+    echo -e "no\nyes" | dmenu -i -c -l 2 -p "Are you sure?" | grep -q "yes" && kill "$pid"
+fi
