@@ -48,4 +48,8 @@ prepend_keymap = [
     "c",
     "m",
   ], run = "plugin chmod", desc = "Chmod on selected files" },
+
+  { on = [
+    "R",
+  ], run = "plugin rsync -- --remember", desc = "Copy files using rsync" },
 ]
