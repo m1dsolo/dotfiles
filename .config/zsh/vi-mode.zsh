@@ -49,13 +49,17 @@ function x11-clip-wrap-widgets() {
             eval "
             function _x11-clip-wrapped-$widget() {
                 zle .$widget
-                xclip -in -selection clipboard <<<\$CUTBUFFER
+                if [[ -n \"\$DISPLAY\" ]]; then
+                    xclip -in -selection clipboard <<<\$CUTBUFFER
+                fi
             }
             "
         else
             eval "
             function _x11-clip-wrapped-$widget() {
-                CUTBUFFER=\$(xclip -out -selection clipboard)
+                if [[ -n \"\$DISPLAY\" ]]; then
+                    CUTBUFFER=\$(xclip -out -selection clipboard)
+                fi
                 zle .$widget
             }
             "
