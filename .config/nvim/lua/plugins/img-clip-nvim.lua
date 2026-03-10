@@ -3,7 +3,7 @@ return {
 	event = "VeryLazy",
 	opts = {
 		default = {
-			dir_path = "assets",
+			dir_path = ".",
 			insert_mode_after_paste = false,
 		},
 		filetypes = {
